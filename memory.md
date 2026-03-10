@@ -22,3 +22,4 @@
 - 2026-03-09: added `services/date_input.py` and `tests/test_date_input.py`; parsing dates now accepts inputs `DD.MM`, `DD MM`, `DD.MM.YY`, `DD MM YY` with current year fallback when year is omitted.
 - 2026-03-09: added `services/ai_formatter.py` and `tests/test_ai_formatter.py`; AI answers are now formatted with readable heading, lists, and inline emphasis before sending to Telegram.
 - 2026-03-09: disabled `TELETHON_SESSION` fallback for user parsing; parsing now requires a valid user MTProto session file. Reduced session auth cache TTL from 120s to 30s.
+- 2026-03-10: published current main state to GitHub repository origin (https://github.com/Cron3xxxx/project.git), commit 2b98980.
