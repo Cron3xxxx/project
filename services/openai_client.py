@@ -1,23 +1,29 @@
 from __future__ import annotations
 
-from typing import Optional
-
-from openai import OpenAI
+from typing import Any, Optional
 
 from config import OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TIMEOUT_SECONDS
 
 
-_CLIENT: Optional[OpenAI] = None
+_CLIENT: Optional[Any] = None
 
 
-def _get_client() -> OpenAI:
+def _build_client() -> Any:
+    try:
+        from openai import OpenAI
+    except ModuleNotFoundError as e:
+        raise RuntimeError("OpenAI SDK is not installed. Run: pip install openai") from e
+
+    if OPENAI_API_KEY:
+        return OpenAI(api_key=OPENAI_API_KEY, timeout=OPENAI_TIMEOUT_SECONDS)
+    return OpenAI(timeout=OPENAI_TIMEOUT_SECONDS)
+
+
+def _get_client() -> Any:
     global _CLIENT
     if _CLIENT is not None:
         return _CLIENT
-    if OPENAI_API_KEY:
-        _CLIENT = OpenAI(api_key=OPENAI_API_KEY, timeout=OPENAI_TIMEOUT_SECONDS)
-    else:
-        _CLIENT = OpenAI(timeout=OPENAI_TIMEOUT_SECONDS)
+    _CLIENT = _build_client()
     return _CLIENT
 
 

@@ -147,3 +147,109 @@
 2026-02-22 16:08:01,165 WARNING 2fa_invalid user_id=1562297545 phone=+79***86
 2026-02-22 16:08:09,424 WARNING 2fa_failed user_id=1562297545 phone=+79***86 error=Сессия для 2FA не найдена. Начните привязку заново.
 2026-02-22 16:08:09,545 INFO session_deleted user_id=1562297545 reason=2fa_failed path=storage\sessions\1562297545.session
+2026-02-22 16:58:06,020 INFO link_start user_id=1562297545
+2026-02-22 16:58:12,264 INFO phone_input user_id=1562297545
+2026-02-22 16:58:12,265 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 16:58:12,265 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 16:58:15,511 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 16:58:15,666 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=0402d3ba53b4d3e7f5
+2026-02-22 16:58:15,666 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 16:59:20,711 INFO link_start user_id=7622313319
+2026-02-22 16:59:29,747 INFO phone_input user_id=7622313319
+2026-02-22 16:59:29,748 INFO phone_normalized user_id=7622313319 phone=+79***69
+2026-02-22 16:59:29,749 INFO code_send_start user_id=7622313319 phone=+79***69 session_path=storage\sessions\7622313319.session
+2026-02-22 16:59:31,930 INFO code_send_request user_id=7622313319 phone=+79***69 force_sms=False
+2026-02-22 16:59:32,045 INFO code_send_response user_id=7622313319 phone=+79***69 type=SentCodeTypeApp next_type=unknown timeout=None hash=e740a2efd3f6c52415
+2026-02-22 16:59:32,045 INFO code_sent user_id=7622313319 phone=+79***69
+2026-03-08 23:17:22,809 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage\sessions\1562297545.session
+2026-03-08 23:22:44,588 INFO link_start user_id=1562297545
+2026-03-08 23:22:52,522 INFO phone_input user_id=1562297545
+2026-03-08 23:22:52,522 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-03-08 23:22:52,525 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-03-08 23:22:54,641 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-08 23:22:54,791 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=ff9f43548c6d881a15
+2026-03-08 23:22:54,791 INFO code_sent user_id=1562297545 phone=+79***86
+2026-03-08 23:23:11,081 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The phone code entered was invalid (caused by SignInRequest)
+2026-03-08 23:23:11,081 INFO session_deleted user_id=1562297545 reason=code_invalid path=storage\sessions\1562297545.session
+2026-03-08 23:23:11,082 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-03-08 23:23:13,204 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-08 23:23:13,358 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=90bfbf50b00642c705
+2026-03-08 23:23:18,943 WARNING session_delete_failed user_id=1562297545 reason=code_too_short path=storage\sessions\1562297545.session error=[WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'storage\\sessions\\1562297545.session'
+2026-03-08 23:23:21,584 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage\sessions\1562297545.session
+2026-03-08 23:23:58,802 INFO session_deleted user_id=7767438870 reason=session_not_authorized path=storage\sessions\7767438870.session
+2026-03-08 23:24:00,383 INFO link_start user_id=7767438870
+2026-03-08 23:24:10,194 INFO phone_input user_id=7767438870
+2026-03-08 23:24:10,195 WARNING phone_invalid user_id=7767438870
+2026-03-08 23:24:26,570 INFO link_start user_id=7767438870
+2026-03-08 23:24:31,461 INFO phone_input user_id=7767438870
+2026-03-08 23:24:31,461 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-08 23:24:31,462 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage\sessions\7767438870.session
+2026-03-08 23:24:33,409 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-08 23:24:33,537 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=68b47259a26b5bd529
+2026-03-08 23:24:33,537 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-08 23:24:53,914 INFO session_deleted user_id=7547865680 reason=session_not_authorized path=storage\sessions\7547865680.session
+2026-03-08 23:24:53,914 INFO link_start user_id=7547865680
+2026-03-08 23:24:58,646 INFO phone_input user_id=7547865680
+2026-03-08 23:24:58,646 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-08 23:24:58,648 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage\sessions\7547865680.session
+2026-03-08 23:25:00,973 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-08 23:25:01,130 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=41718cc16f24cd452b
+2026-03-08 23:25:01,130 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-08 23:25:32,703 INFO link_start user_id=7086955195
+2026-03-08 23:25:40,169 INFO phone_input user_id=7086955195
+2026-03-08 23:25:40,170 INFO phone_normalized user_id=7086955195 phone=+89***69
+2026-03-08 23:25:40,171 INFO code_send_start user_id=7086955195 phone=+89***69 session_path=storage\sessions\7086955195.session
+2026-03-08 23:25:41,765 INFO code_send_request user_id=7086955195 phone=+89***69 force_sms=False
+2026-03-08 23:25:41,865 INFO code_send_response user_id=7086955195 phone=+89***69 type=SentCodeTypeApp next_type=unknown timeout=None hash=265fdbfa6a4fb31bdb
+2026-03-08 23:25:41,865 INFO code_sent user_id=7086955195 phone=+89***69
+2026-03-08 23:26:02,850 WARNING session_delete_failed user_id=7547865680 reason=code_too_short path=storage\sessions\7547865680.session error=[WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'storage\\sessions\\7547865680.session'
+2026-03-08 23:26:04,376 INFO session_deleted user_id=7547865680 reason=session_not_authorized path=storage\sessions\7547865680.session
+2026-03-08 23:26:04,376 INFO link_start user_id=7547865680
+2026-03-08 23:26:08,767 INFO phone_input user_id=7547865680
+2026-03-08 23:26:08,767 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-08 23:26:08,769 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage\sessions\7547865680.session
+2026-03-08 23:26:10,979 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-08 23:26:11,241 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=6e53dc160d48253cb9
+2026-03-08 23:26:11,242 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-08 23:26:20,082 WARNING session_delete_failed user_id=7086955195 reason=code_too_short path=storage\sessions\7086955195.session error=[WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'storage\\sessions\\7086955195.session'
+2026-03-08 23:26:32,443 INFO session_deleted user_id=7086955195 reason=session_not_authorized path=storage\sessions\7086955195.session
+2026-03-08 23:26:32,444 INFO link_start user_id=7086955195
+2026-03-08 23:26:37,925 INFO phone_input user_id=7086955195
+2026-03-08 23:26:37,925 INFO phone_normalized user_id=7086955195 phone=+79***69
+2026-03-08 23:26:37,927 INFO code_send_start user_id=7086955195 phone=+79***69 session_path=storage\sessions\7086955195.session
+2026-03-08 23:26:39,777 INFO code_send_request user_id=7086955195 phone=+79***69 force_sms=False
+2026-03-08 23:26:39,975 INFO code_send_response user_id=7086955195 phone=+79***69 type=SentCodeTypeApp next_type=unknown timeout=None hash=7c5c0a5000a02c2b13
+2026-03-08 23:26:39,975 INFO code_sent user_id=7086955195 phone=+79***69
+2026-03-08 23:47:54,694 INFO link_start user_id=1562297545
+2026-03-08 23:48:02,450 INFO phone_input user_id=1562297545
+2026-03-08 23:48:02,450 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-03-08 23:48:02,451 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-03-08 23:48:05,045 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-08 23:48:05,195 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=840794713da9a940a0
+2026-03-08 23:48:05,195 INFO code_sent user_id=1562297545 phone=+79***86
+2026-03-08 23:48:11,792 WARNING session_delete_failed user_id=1562297545 reason=code_too_short path=storage\sessions\1562297545.session error=[WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'storage\\sessions\\1562297545.session'
+2026-03-08 23:48:13,942 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage\sessions\1562297545.session
+2026-03-09 00:19:48,711 INFO event=AUTH_LINK_START user_id=1562297545
+2026-03-09 00:19:51,032 INFO event=AUTH_PHONE_INPUT user_id=1562297545
+2026-03-09 00:19:51,032 INFO event=AUTH_PHONE_ACCEPTED user_id=1562297545 phone=+79***86
+2026-03-09 00:19:51,033 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-03-09 00:19:53,527 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-09 00:19:53,673 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=74e45c806a73f9fe29
+2026-03-09 00:19:53,673 INFO event=AUTH_CODE_SENT user_id=1562297545 phone=+79***86
+2026-03-09 00:20:00,288 WARNING event=AUTH_CODE_INVALID user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-03-09 00:20:00,288 INFO session_deleted user_id=1562297545 reason=code_invalid path=storage\sessions\1562297545.session
+2026-03-09 00:20:00,289 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-03-09 00:20:02,216 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-09 00:20:02,399 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=92204adc6c35cd26d5
+2026-03-09 00:20:10,465 INFO event=AUTH_2FA_REQUIRED user_id=1562297545 phone=+79***86
+2026-03-09 00:20:16,590 INFO event=AUTH_LINK_SUCCESS_2FA user_id=1562297545 phone=+79***86
+2026-03-09 00:33:35,303 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage\sessions\1562297545.session
+2026-03-09 00:33:38,854 INFO event=AUTH_LINK_START user_id=1562297545
+2026-03-09 00:33:45,827 INFO event=AUTH_PHONE_INPUT user_id=1562297545
+2026-03-09 00:33:45,827 INFO event=AUTH_PHONE_ACCEPTED user_id=1562297545 phone=+79***86
+2026-03-09 00:33:45,828 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-03-09 00:33:47,925 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-09 00:33:48,162 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=5cc821ad5d2416690e
+2026-03-09 00:33:48,162 INFO event=AUTH_CODE_SENT user_id=1562297545 phone=+79***86
+2026-03-09 00:33:55,592 INFO event=AUTH_2FA_REQUIRED user_id=1562297545 phone=+79***86
+2026-03-09 00:34:01,614 INFO event=AUTH_LINK_SUCCESS_2FA user_id=1562297545 phone=+79***86

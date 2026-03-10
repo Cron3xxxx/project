@@ -4,7 +4,6 @@ import logging
 import os
 import re
 import threading
-import html
 import time
 from datetime import datetime, timedelta
 from types import SimpleNamespace
@@ -12,15 +11,11 @@ from types import SimpleNamespace
 from telebot import TeleBot, types
 from telethon import TelegramClient
 from telethon.errors import (
-    RPCError,
     SessionPasswordNeededError,
     PhoneCodeExpiredError,
     PhoneCodeInvalidError,
     PasswordHashInvalidError,
 )
-from telethon.sessions import StringSession
-from telethon.tl.functions.channels import JoinChannelRequest
-from telethon.tl.functions.channels import JoinChannelRequest
 
 from config import (
     AI_ENABLED,
@@ -35,6 +30,35 @@ from config import (
     TG_FORCE_SMS,
 )
 from services import openai_client
+from services.ai_formatter import build_ai_answer_message, render_ai_html
+from services.auth_flow import (
+    apply_sent_code_meta,
+    auth_locked,
+    clear_auth_failures,
+    code_resend_wait,
+    mask_phone,
+    normalize_phone,
+    register_auth_failure,
+)
+from services.auth_utils import delivery_hint, extract_digits_code, parse_sent_code_metadata
+from services.auth_session import (
+    close_login_client as close_login_client_service,
+    complete_2fa as complete_2fa_service,
+    complete_login as complete_login_service,
+    send_login_code as send_login_code_service,
+)
+from services.auth_orchestrator import AuthOrchestrator
+from services.date_input import parse_user_date
+from services.parsing_orchestrator import ParsingOrchestrator
+from services.parsing_service import parse_with_telethon as parse_with_telethon_service
+from services.user_storage import (
+    create_user,
+    ensure_or_create_user,
+    get_user,
+    load_storage,
+    save_storage,
+    upsert_user,
+)
 
 
 DATE_FORMAT = "%d-%m-%Y"
@@ -45,13 +69,14 @@ STORAGE_PATH = os.path.join("storage", "data.json")
 SESSIONS_DIR = os.path.join("storage", "sessions")
 LOGS_DIR = "logs"
 AUTH_LOG_PATH = os.path.join(LOGS_DIR, "auth.log")
+PARSING_LOG_PATH = os.path.join(LOGS_DIR, "parsing.log")
 ASSETS_DIR = "assets"
 DRAFTS_DIR = os.path.join("storage", "drafts")
 
 MAX_AUTH_ATTEMPTS = 5
 AUTH_LOCK_SECONDS = 10 * 60
 CODE_RESEND_COOLDOWN = 60
-SESSION_AUTH_TTL_SECONDS = 120
+SESSION_AUTH_TTL_SECONDS = 30
 
 _TELETHON_LOOP = asyncio.new_event_loop()
 _LOGIN_CLIENTS: dict[int, TelegramClient] = {}
@@ -83,21 +108,25 @@ def _get_auth_logger() -> logging.Logger:
     return logger
 
 
+def _get_parsing_logger() -> logging.Logger:
+    os.makedirs(LOGS_DIR, exist_ok=True)
+    logger = logging.getLogger("parsing")
+    if logger.handlers:
+        return logger
+    logger.setLevel(logging.INFO)
+    handler = logging.FileHandler(PARSING_LOG_PATH, encoding="utf-8")
+    formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    return logger
+
+
 def _load_storage() -> dict:
-    if not os.path.exists(STORAGE_PATH):
-        return {"users": {}}
-    try:
-        with open(STORAGE_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        # Если файл повреждён/пустой, начинаем с чистого хранилища
-        return {"users": {}}
+    return load_storage(STORAGE_PATH)
 
 
 def _save_storage(data: dict) -> None:
-    os.makedirs(os.path.dirname(STORAGE_PATH), exist_ok=True)
-    with open(STORAGE_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    save_storage(STORAGE_PATH, data)
 
 
 def _draft_path(user_id: int) -> str:
@@ -106,8 +135,13 @@ def _draft_path(user_id: int) -> str:
 
 def _save_draft(user_id: int, payload: dict) -> None:
     os.makedirs(DRAFTS_DIR, exist_ok=True)
-    with open(_draft_path(user_id), "w", encoding="utf-8") as f:
+    path = _draft_path(user_id)
+    tmp_path = f"{path}.tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp_path, path)
 
 
 def _load_draft(user_id: int) -> dict | None:
@@ -122,33 +156,19 @@ def _load_draft(user_id: int) -> dict | None:
 
 
 def _ensure_user(user_id: int) -> dict | None:
-    data = _load_storage()
-    user = data["users"].get(str(user_id))
-    if user:
-        return user
-    return None
+    return get_user(STORAGE_PATH, user_id)
 
 
 def _ensure_or_create_user(user_id: int) -> dict:
-    user = _ensure_user(user_id)
-    if user:
-        return user
-    return _create_user(user_id)
+    return ensure_or_create_user(STORAGE_PATH, user_id, DATE_FORMAT)
 
 
 def _create_user(user_id: int) -> dict:
-    data = _load_storage()
-    users = data.setdefault("users", {})
-    now = datetime.utcnow().strftime(DATE_FORMAT)
-    users[str(user_id)] = {
-        "registered_at": now,
-        "channels": [],
-        "last_query": "",
-        "last_range": {"from": None, "to": None},
-        "last_parse": None,
-    }
-    _save_storage(data)
-    return users[str(user_id)]
+    return create_user(STORAGE_PATH, user_id, DATE_FORMAT)
+
+
+def _upsert_user(user_id: int, user_payload: dict) -> None:
+    upsert_user(STORAGE_PATH, user_id, user_payload)
 
 
 
@@ -192,10 +212,7 @@ def _inline_menu_channels() -> types.InlineKeyboardMarkup:
 
 
 def _parse_date(date_str: str) -> datetime | None:
-    try:
-        return datetime.strptime(date_str, DATE_FORMAT)
-    except ValueError:
-        return None
+    return parse_user_date(date_str)
 
 
 def _within_history_limit(date_obj: datetime) -> bool:
@@ -319,7 +336,6 @@ def _reset_parse_flow(user_id: int, chat_id: int) -> None:
         user_states.pop(user_id, None)
     try:
         bot.clear_step_handler_by_chat_id(chat_id)
-        bot.clear_step_handler_by_chat_id(chat_id)
     except Exception:
         pass
 
@@ -363,24 +379,7 @@ def _truncate_text(text: str, max_len: int) -> str:
 
 
 def _render_ai_html(text: str) -> str:
-    lines = text.splitlines()
-    out_lines: list[str] = []
-    for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("## "):
-            content = stripped[3:].strip()
-            out_lines.append(f"<b>{html.escape(content)}</b>")
-            continue
-        if stripped.startswith("# "):
-            content = stripped[2:].strip()
-            out_lines.append(f"<b>{html.escape(content)}</b>")
-            continue
-        if stripped.startswith("**") and stripped.endswith("**") and len(stripped) > 4:
-            content = stripped[2:-2].strip()
-            out_lines.append(f"<b>{html.escape(content)}</b>")
-            continue
-        out_lines.append(html.escape(line))
-    return "\n".join(out_lines)
+    return render_ai_html(text)
 
 
 def _send_long_text(chat_id: int, text: str, parse_mode: str | None = None) -> None:
@@ -462,43 +461,27 @@ def _delete_user_session_file(user_id: int, reason: str) -> None:
 
 
 def _normalize_phone(phone: str) -> str | None:
-    raw = phone.strip()
-    if not raw:
-        return None
-    if raw.startswith("+"):
-        num = raw[1:]
-        if num.isdigit():
-            return "+" + num
-        return None
-    if raw.isdigit():
-        return "+" + raw
-    return None
+    return normalize_phone(phone)
 
 
 def _mask_phone(phone: str) -> str:
-    if not phone or len(phone) < 6:
-        return "***"
-    return f"{phone[:3]}***{phone[-2:]}"
+    return mask_phone(phone)
 
 
 def _auth_locked(state: dict) -> int:
-    lock_until = state.get("lock_until", 0)
-    now = int(time.time())
-    if lock_until and now < lock_until:
-        return lock_until - now
-    return 0
+    return auth_locked(state)
 
 
 def _register_auth_failure(state: dict) -> None:
-    attempts = int(state.get("auth_attempts", 0)) + 1
-    state["auth_attempts"] = attempts
-    if attempts >= MAX_AUTH_ATTEMPTS:
-        state["lock_until"] = int(time.time()) + AUTH_LOCK_SECONDS
+    register_auth_failure(
+        state,
+        max_auth_attempts=MAX_AUTH_ATTEMPTS,
+        auth_lock_seconds=AUTH_LOCK_SECONDS,
+    )
 
 
 def _clear_auth_failures(state: dict) -> None:
-    state.pop("auth_attempts", None)
-    state.pop("lock_until", None)
+    clear_auth_failures(state)
 
 
 def _reset_link_flow(user_id: int) -> None:
@@ -509,88 +492,54 @@ def _reset_link_flow(user_id: int) -> None:
         pass
 
 
-async def _send_login_code(user_id: int, phone: str) -> None:
-    api_id = int(TG_API_ID)
-    api_hash = TG_API_HASH
-    session_path = _user_session_path(user_id)
-    auth_log = _get_auth_logger()
-    auth_log.info(
-        "code_send_start user_id=%s phone=%s session_path=%s",
-        user_id,
-        _mask_phone(phone),
-        session_path,
-    )
-    client = _LOGIN_CLIENTS.get(user_id)
-    if client is None:
-        client = TelegramClient(session_path, api_id, api_hash)
-        await client.connect()
-        _LOGIN_CLIENTS[user_id] = client
-    elif not client.is_connected():
-        await client.connect()
-    auth_log.info(
-        "code_send_request user_id=%s phone=%s force_sms=%s",
-        user_id,
-        _mask_phone(phone),
-        TG_FORCE_SMS,
-    )
-    sent = await client.send_code_request(phone, force_sms=TG_FORCE_SMS)
-    code_type = getattr(sent, "type", None)
-    code_type_name = code_type.__class__.__name__ if code_type else "unknown"
-    next_type = getattr(sent, "next_type", None)
-    next_type_name = next_type.__class__.__name__ if next_type else "unknown"
-    timeout = getattr(sent, "timeout", None)
-    auth_log.info(
-        "code_send_response user_id=%s phone=%s type=%s next_type=%s timeout=%s hash=%s",
-        user_id,
-        _mask_phone(phone),
-        code_type_name,
-        next_type_name,
-        timeout,
-        getattr(sent, "phone_code_hash", "n/a"),
+async def _send_login_code(user_id: int, phone: str) -> dict:
+    return await send_login_code_service(
+        user_id=user_id,
+        phone=phone,
+        api_id=int(TG_API_ID),
+        api_hash=TG_API_HASH,
+        session_path=_user_session_path(user_id),
+        login_clients=_LOGIN_CLIENTS,
+        client_factory=TelegramClient,
+        logger=_get_auth_logger(),
+        force_sms=TG_FORCE_SMS,
+        parse_sent_code_metadata=parse_sent_code_metadata,
+        mask_phone=_mask_phone,
     )
 
 
-async def _complete_login(user_id: int, phone: str, code: str, password: str | None = None) -> None:
-    api_id = int(TG_API_ID)
-    api_hash = TG_API_HASH
-    session_path = _user_session_path(user_id)
-    client = _LOGIN_CLIENTS.get(user_id)
-    if client is None:
-        client = TelegramClient(session_path, api_id, api_hash)
-        await client.connect()
-        _LOGIN_CLIENTS[user_id] = client
-    keep_client = False
-    try:
-        try:
-            await client.sign_in(phone=phone, code=code)
-        except SessionPasswordNeededError:
-            if not password:
-                keep_client = True
-                raise
-            await client.sign_in(password=password)
-    finally:
-        if not keep_client:
-            await client.disconnect()
-            _LOGIN_CLIENTS.pop(user_id, None)
+async def _complete_login(
+    user_id: int,
+    phone: str,
+    code: str,
+    phone_code_hash: str | None = None,
+    password: str | None = None,
+) -> None:
+    await complete_login_service(
+        user_id=user_id,
+        phone=phone,
+        code=code,
+        phone_code_hash=phone_code_hash,
+        password=password,
+        api_id=int(TG_API_ID),
+        api_hash=TG_API_HASH,
+        session_path=_user_session_path(user_id),
+        login_clients=_LOGIN_CLIENTS,
+        client_factory=TelegramClient,
+        session_password_needed_error=SessionPasswordNeededError,
+    )
 
 
 async def _complete_2fa(user_id: int, password: str) -> None:
-    client = _LOGIN_CLIENTS.get(user_id)
-    if client is None:
-        raise RuntimeError("Сессия для 2FA не найдена. Начните привязку заново.")
-    if not client.is_connected():
-        await client.connect()
-    try:
-        await client.sign_in(password=password)
-    finally:
-        await client.disconnect()
-        _LOGIN_CLIENTS.pop(user_id, None)
+    await complete_2fa_service(
+        user_id=user_id,
+        password=password,
+        login_clients=_LOGIN_CLIENTS,
+    )
 
 
 async def _close_login_client(user_id: int) -> None:
-    client = _LOGIN_CLIENTS.pop(user_id, None)
-    if client is not None:
-        await client.disconnect()
+    await close_login_client_service(user_id=user_id, login_clients=_LOGIN_CLIENTS)
 
 
 async def _parse_with_telethon(
@@ -601,94 +550,83 @@ async def _parse_with_telethon(
     date_to: datetime,
     progress_cb=None,
 ) -> tuple[int, list[str]]:
-    """
-    Возвращает (total_found, logs_per_channel)
-    """
     api_id = int(TG_API_ID)
     api_hash = TG_API_HASH
-    session_path = _user_session_path(user_id)
-    if os.path.exists(session_path):
-        client = TelegramClient(session_path, api_id, api_hash)
-    else:
-        # fallback на старую строковую сессию, если она задана
-        if not TELETHON_SESSION:
-            raise RuntimeError("Нет файла сессии пользователя и не задан TELETHON_SESSION.")
-        client = TelegramClient(StringSession(TELETHON_SESSION), api_id, api_hash)
-    await client.start()
-    total = 0
-    logs = []
-    total_collected = 0
-    limit_reached = False
-    total_channels = len(channels)
-    processed = 0
-    for ch in channels:
-        name = _normalize_channel(ch.get("channel", ""))
-        found = 0
-        checked = 0
-        joined = False
-        samples: list[str] = []
-        if not name:
-            logs.append("пустое имя канала, пропуск")
-            continue
-        try:
-            entity = await client.get_entity(name)
-            entity_username = getattr(entity, "username", None)
-            # Пытаемся присоединиться к публичному каналу, если ещё не в нём
-            try:
-                await client(JoinChannelRequest(entity))
-                joined = True
-            except Exception:
-                pass  # если уже внутри или нельзя присоединиться — продолжаем
+    user_session_path = _user_session_path(user_id)
+    return await parse_with_telethon_service(
+        api_id=api_id,
+        api_hash=api_hash,
+        session_path=user_session_path if os.path.exists(user_session_path) else "",
+        fallback_session=None,
+        channels=channels,
+        query=query,
+        date_from=date_from,
+        date_to=date_to,
+        ai_max_messages=AI_MAX_MESSAGES,
+        ai_max_message_chars=AI_MAX_MESSAGE_CHARS,
+        progress_cb=progress_cb,
+    )
 
-            async for msg in client.iter_messages(entity, offset_date=date_to + timedelta(days=1)):
-                msg_dt = msg.date
-                if msg_dt is None:
-                    continue
-                msg_dt_naive = msg_dt.replace(tzinfo=None)
-                if msg_dt_naive < date_from:
-                    break
-                if msg_dt_naive > date_to + timedelta(days=1):
-                    continue
-                text = (msg.message or msg.raw_text or "")
-                if msg.date:
-                    msg_date = msg.date.strftime("%Y-%m-%d %H:%M")
-                else:
-                    msg_date = "unknown"
-                checked += 1
-                if text.strip():
-                    found += 1
-                    total_collected += 1
-                    if len(samples) < 50:
-                        clean = _truncate_text(text.replace("\n", " "), AI_MAX_MESSAGE_CHARS)
-                        if entity_username and msg.id:
-                            link = f"https://t.me/{entity_username}/{msg.id}"
-                        else:
-                            link = "n/a"
-                        header = f"[{msg_date}] {name} | {link}"
-                        samples.append(f"{header}\n{clean}")
-                    if total_collected >= AI_MAX_MESSAGES:
-                        limit_reached = True
-                        break
-        except RPCError as e:
-            logs.append(f"{name}: ошибка RPC {e.__class__.__name__}")
-            continue
-        except Exception as e:  # noqa: BLE001
-            logs.append(f"{name}: ошибка {e}")
-            continue
-        total += found
-        join_note = "join ok" if joined else "join skipped/failed"
-        line = f"{name}: просмотрено {checked}, собрано {found} ({join_note})"
-        if samples:
-            line += "\nпримеры:\n" + "\n".join(samples)
-        logs.append(line)
-        processed += 1
-        if progress_cb:
-            progress_cb(processed, total_channels)
-        if limit_reached:
-            logs.append(f"Достигнут лимит сообщений: {AI_MAX_MESSAGES}. Остальные каналы пропущены.")
-            break
-    await client.disconnect()
-    return total, logs
+
+_AUTH_ORCHESTRATOR = AuthOrchestrator(
+    user_states=user_states,
+    session_auth_cache=_SESSION_AUTH_CACHE,
+    code_resend_cooldown=CODE_RESEND_COOLDOWN,
+    bot=bot,
+    get_auth_logger=_get_auth_logger,
+    telethon_credentials_ok=_telethon_credentials_ok,
+    has_user_session=_has_user_session,
+    auth_locked=_auth_locked,
+    register_auth_failure=_register_auth_failure,
+    clear_auth_failures=_clear_auth_failures,
+    normalize_phone=_normalize_phone,
+    mask_phone=_mask_phone,
+    run_telethon=_run_telethon,
+    send_login_code=_send_login_code,
+    complete_login=_complete_login,
+    complete_2fa=_complete_2fa,
+    reset_link_flow=_reset_link_flow,
+    delete_user_session_file=_delete_user_session_file,
+    refresh_main_card=_refresh_main_card,
+    extract_digits_code=extract_digits_code,
+    apply_sent_code_meta=apply_sent_code_meta,
+    code_resend_wait=code_resend_wait,
+    delivery_hint=delivery_hint,
+    session_password_needed_error=SessionPasswordNeededError,
+    phone_code_expired_error=PhoneCodeExpiredError,
+    phone_code_invalid_error=PhoneCodeInvalidError,
+    password_hash_invalid_error=PasswordHashInvalidError,
+    reply_keyboard_remove_factory=types.ReplyKeyboardRemove,
+)
+
+_PARSING_ORCHESTRATOR = ParsingOrchestrator(
+    user_states=user_states,
+    bot=bot,
+    date_format=DATE_FORMAT,
+    history_limit_months=HISTORY_LIMIT_MONTHS,
+    max_topic_length=MAX_TOPIC_LENGTH,
+    telethon_session=None,
+    get_logger=_get_parsing_logger,
+    reset_parse_flow=_reset_parse_flow,
+    ensure_or_create_user=_ensure_or_create_user,
+    telethon_credentials_ok=_telethon_credentials_ok,
+    has_user_session=_has_user_session,
+    parse_date=_parse_date,
+    within_history_limit=_within_history_limit,
+    send_asset_photo=_send_asset_photo,
+    edit_card_photo=_edit_card_photo,
+    back_markup=_back_markup,
+    inline_menu_channels=_inline_menu_channels,
+    on_complete_parsing=lambda message, user, state, date_from_raw, date_to_raw, date_from, date_to: _complete_parsing(
+        message,
+        user,
+        state,
+        date_from_raw,
+        date_to_raw,
+        date_from,
+        date_to,
+    ),
+)
 
 
 @bot.message_handler(commands=["start", "help"])
@@ -714,217 +652,26 @@ def handle_link_account(message):
 
 
 def _start_link_flow(message) -> None:
-    auth_log = _get_auth_logger()
-    if not _telethon_credentials_ok():
-        bot.send_message(
-            message.chat.id,
-            "Не заданы Telegram API креды (TG_API_ID/TG_API_HASH). Укажите их в .env.",
-            reply_markup=None,
-        )
-        return
-    if _has_user_session(message.from_user.id):
-        bot.send_message(message.chat.id, "Аккаунт уже привязан.")
-        return
-    if user_states.get(message.from_user.id, {}).get("link_mode"):
-        bot.send_message(message.chat.id, "Привязка уже начата. Следуйте предыдущим шагам.")
-        return
-    user_states[message.from_user.id] = {"link_mode": True}
-    auth_log.info("link_start user_id=%s", message.from_user.id)
-    msg = bot.send_message(message.chat.id, "Введите номер телефона в формате +79991112233.")
-    bot.register_next_step_handler(msg, _handle_link_phone)
+    _AUTH_ORCHESTRATOR.start_link_flow(message)
 
 
 def _handle_link_phone(message):
-    auth_log = _get_auth_logger()
-    state = user_states.get(message.from_user.id)
-    auth_log.info("phone_input user_id=%s", message.from_user.id)
-    if not state or not state.get("link_mode"):
-        bot.send_message(message.chat.id, "Состояние сброшено, начните заново.")
-        user_states.pop(message.from_user.id, None)
-        return
-    remaining = _auth_locked(state)
-    if remaining:
-        auth_log.warning("auth_locked user_id=%s remaining=%s", message.from_user.id, remaining)
-        bot.send_message(message.chat.id, f"Превышен лимит попыток. Повторите через {remaining} сек.")
-        return
-    last_sent = int(state.get("last_code_sent_at", 0))
-    now = int(time.time())
-    if last_sent and now - last_sent < CODE_RESEND_COOLDOWN:
-        wait = CODE_RESEND_COOLDOWN - (now - last_sent)
-        auth_log.info("code_resend_blocked user_id=%s wait=%s", message.from_user.id, wait)
-        bot.send_message(message.chat.id, f"Код уже отправлен. Повторите через {wait} сек.")
-        return
-    phone = _normalize_phone(message.text or "")
-    if not phone:
-        auth_log.warning("phone_invalid user_id=%s", message.from_user.id)
-        bot.send_message(message.chat.id, "Неверный формат телефона. Пример: +79991112233")
-        user_states.pop(message.from_user.id, None)
-        return
-    auth_log.info("phone_normalized user_id=%s phone=%s", message.from_user.id, _mask_phone(phone))
-    try:
-        _run_telethon(_send_login_code(message.from_user.id, phone))
-    except Exception as e:  # noqa: BLE001
-        _register_auth_failure(state)
-        remaining = _auth_locked(state)
-        auth_log.warning("code_send_failed user_id=%s phone=%s error=%s", message.from_user.id, _mask_phone(phone), e)
-        bot.send_message(message.chat.id, f"Ошибка отправки кода: {e}")
-        if remaining:
-            bot.send_message(message.chat.id, f"Лимит попыток исчерпан. Повторите через {remaining} сек.")
-        _delete_user_session_file(message.from_user.id, "code_send_failed")
-        _reset_link_flow(message.from_user.id)
-        return
-    state["phone"] = phone
-    state["last_code_sent_at"] = int(time.time())
-    auth_log.info("code_sent user_id=%s phone=%s", message.from_user.id, _mask_phone(phone))
-    msg = bot.send_message(
-        message.chat.id,
-        "Код отправлен. Введите его, но НЕ отправляйте как чистые цифры.\n"
-        "Например: 1a2b3c4d5 (бот сам уберёт буквы).",
-    )
-    bot.register_next_step_handler(msg, _handle_link_code)
+    _AUTH_ORCHESTRATOR.handle_link_phone(message)
 
 
 def _handle_link_code(message):
-    auth_log = _get_auth_logger()
-    state = user_states.get(message.from_user.id)
-    if not state or not state.get("link_mode") or "phone" not in state:
-        bot.send_message(message.chat.id, "Состояние сброшено, начните заново.")
-        _delete_user_session_file(message.from_user.id, "link_state_missing_code")
-        _reset_link_flow(message.from_user.id)
-        return
-    remaining = _auth_locked(state)
-    if remaining:
-        bot.send_message(message.chat.id, f"Превышен лимит попыток. Повторите через {remaining} сек.")
-        return
-    raw = (message.text or "").strip()
-    code = "".join(ch for ch in raw if ch.isdigit())
-    if len(code) < 4:
-        bot.send_message(
-            message.chat.id,
-            "Код не распознан. Введите его с любыми буквами между цифрами, например: 1a2b3c4d5",
-            reply_markup=None,
-        )
-        _delete_user_session_file(message.from_user.id, "code_too_short")
-        _reset_link_flow(message.from_user.id)
-        return
-    try:
-        _run_telethon(_complete_login(message.from_user.id, state["phone"], code))
-        _clear_auth_failures(state)
-        _SESSION_AUTH_CACHE[message.from_user.id] = (time.time(), True)
-        _reset_link_flow(message.from_user.id)
-        _refresh_main_card(message.from_user.id, message.chat.id)
-        try:
-            bot.send_message(
-                message.chat.id,
-                "Аккаунт привязан.",
-                reply_markup=types.ReplyKeyboardRemove(),
-            )
-        except Exception:
-            pass
-        auth_log.info("link_success user_id=%s phone=%s", message.from_user.id, _mask_phone(state["phone"]))
-        bot.send_message(message.chat.id, "Аккаунт успешно привязан.", reply_markup=None)
-        return
-    except SessionPasswordNeededError:
-        state["code"] = code
-        auth_log.info("2fa_required user_id=%s phone=%s", message.from_user.id, _mask_phone(state["phone"]))
-        msg = bot.send_message(message.chat.id, "Включена 2FA. Введите пароль от аккаунта.")
-        bot.register_next_step_handler(msg, _handle_link_password)
-        return
-    except (PhoneCodeExpiredError, PhoneCodeInvalidError) as e:
-        auth_log.warning("code_invalid user_id=%s phone=%s error=%s", message.from_user.id, _mask_phone(state["phone"]), e)
-        _delete_user_session_file(message.from_user.id, "code_invalid")
-        try:
-            _run_telethon(_send_login_code(message.from_user.id, state["phone"]))
-            state["last_code_sent_at"] = int(time.time())
-            msg = bot.send_message(
-                message.chat.id,
-                "Код недействителен/истёк. Отправил новый код. Введите его в формате 1a2b3c4d5.",
-            )
-            bot.register_next_step_handler(msg, _handle_link_code)
-            return
-        except Exception as send_err:  # noqa: BLE001
-            _register_auth_failure(state)
-            remaining = _auth_locked(state)
-            auth_log.warning(
-                "code_resend_failed user_id=%s phone=%s error=%s",
-                message.from_user.id,
-                _mask_phone(state["phone"]),
-                send_err,
-            )
-            bot.send_message(message.chat.id, f"Ошибка отправки нового кода: {send_err}")
-            if remaining:
-                bot.send_message(message.chat.id, f"Лимит попыток исчерпан. Повторите через {remaining} сек.")
-            _delete_user_session_file(message.from_user.id, "code_resend_failed")
-            _reset_link_flow(message.from_user.id)
-            return
-    except Exception as e:  # noqa: BLE001
-        _register_auth_failure(state)
-        remaining = _auth_locked(state)
-        auth_log.warning("code_verify_failed user_id=%s phone=%s error=%s", message.from_user.id, _mask_phone(state["phone"]), e)
-        bot.send_message(message.chat.id, f"Ошибка входа: {e}")
-        if remaining:
-            bot.send_message(message.chat.id, f"Лимит попыток исчерпан. Повторите через {remaining} сек.")
-        _delete_user_session_file(message.from_user.id, "code_verify_failed")
-        _reset_link_flow(message.from_user.id)
+    _AUTH_ORCHESTRATOR.handle_link_code(message)
 
 
 def _handle_link_password(message):
-    auth_log = _get_auth_logger()
-    state = user_states.get(message.from_user.id)
-    if not state or not state.get("link_mode") or "phone" not in state or "code" not in state:
-        bot.send_message(message.chat.id, "Состояние сброшено, начните заново.")
-        _delete_user_session_file(message.from_user.id, "link_state_missing_2fa")
-        _reset_link_flow(message.from_user.id)
-        return
-    remaining = _auth_locked(state)
-    if remaining:
-        bot.send_message(message.chat.id, f"Превышен лимит попыток. Повторите через {remaining} сек.")
-        return
-    password = (message.text or "").strip()
-    if not password:
-        bot.send_message(message.chat.id, "Пароль не может быть пустым.")
-        _delete_user_session_file(message.from_user.id, "2fa_empty_password")
-        _reset_link_flow(message.from_user.id)
-        return
-    try:
-        _run_telethon(_complete_2fa(message.from_user.id, password))
-        _clear_auth_failures(state)
-        _SESSION_AUTH_CACHE[message.from_user.id] = (time.time(), True)
-        _reset_link_flow(message.from_user.id)
-        _refresh_main_card(message.from_user.id, message.chat.id)
-        try:
-            bot.send_message(
-                message.chat.id,
-                "Аккаунт привязан.",
-                reply_markup=types.ReplyKeyboardRemove(),
-            )
-        except Exception:
-            pass
-        auth_log.info("link_success user_id=%s phone=%s (2fa)", message.from_user.id, _mask_phone(state["phone"]))
-        bot.send_message(message.chat.id, "Аккаунт успешно привязан.", reply_markup=None)
-    except PasswordHashInvalidError:
-        _register_auth_failure(state)
-        remaining = _auth_locked(state)
-        auth_log.warning("2fa_invalid user_id=%s phone=%s", message.from_user.id, _mask_phone(state["phone"]))
-        bot.send_message(message.chat.id, "Неверный пароль 2FA. Попробуйте ещё раз.")
-        if remaining:
-            bot.send_message(message.chat.id, f"Лимит попыток исчерпан. Повторите через {remaining} сек.")
-            _delete_user_session_file(message.from_user.id, "2fa_invalid_locked")
-            _reset_link_flow(message.from_user.id)
-        else:
-            msg = bot.send_message(message.chat.id, "Введите пароль от аккаунта.")
-            bot.register_next_step_handler(msg, _handle_link_password)
-        return
-    except Exception as e:  # noqa: BLE001
-        _register_auth_failure(state)
-        remaining = _auth_locked(state)
-        auth_log.warning("2fa_failed user_id=%s phone=%s error=%s", message.from_user.id, _mask_phone(state["phone"]), e)
-        bot.send_message(message.chat.id, f"Ошибка входа: {e}")
-        if remaining:
-            bot.send_message(message.chat.id, f"Лимит попыток исчерпан. Повторите через {remaining} сек.")
-        _delete_user_session_file(message.from_user.id, "2fa_failed")
-        _reset_link_flow(message.from_user.id)
+    _AUTH_ORCHESTRATOR.handle_link_password(message)
 
+
+_AUTH_ORCHESTRATOR.set_handlers(
+    handle_phone=_handle_link_phone,
+    handle_code=_handle_link_code,
+    handle_password=_handle_link_password,
+)
 
 def _account_text(message) -> str:
     user = _ensure_or_create_user(message.from_user.id)
@@ -972,161 +719,32 @@ def handle_parsing(message):
 
 
 def _start_parsing_flow(user_id: int, chat_id: int, card_message_id: int | None = None) -> None:
-    _reset_parse_flow(user_id, chat_id)
-    if card_message_id:
-        user_states.setdefault(user_id, {})["card_msg_id"] = card_message_id
-    user = _ensure_or_create_user(user_id)
-    channels = user.get("channels", [])
-    if not channels:
-        bot.send_message(chat_id, "Нет настроенных каналов. Добавьте их в меню каналов.", reply_markup=_inline_menu_channels())
-        return
-    if not _telethon_credentials_ok():
-        bot.send_message(
-            chat_id,
-            "⚠️ Не заданы Telegram API креды (TG_API_ID/TG_API_HASH). Укажите их в .env.",
-            reply_markup=None,
-        )
-        return
-    if not _has_user_session(user_id) and not TELETHON_SESSION:
-        bot.send_message(
-            chat_id,
-            "⚠️ Для парсинга нужна MTProto-сессия.\n"
-            "Файл сессии не найден — сначала привяжите аккаунт.",
-            reply_markup=None,
-        )
-        return
-    user_states[user_id] = {"parse_mode": True, "step": "query"}
-    last_query = user.get("last_query")
-    prompt = "🔎 Введите запрос (например: сколько сегодня было землетрясений)."
-    if last_query:
-        prompt += f"\nМожно ввести 'повторить' чтобы использовать прошлый запрос: {last_query}"
-    card_msg_id = user_states.get(user_id, {}).get("card_msg_id")
-    if card_msg_id:
-        _edit_card_photo(chat_id, card_msg_id, "1.png", prompt, markup=_back_markup())
-        bot.clear_step_handler_by_chat_id(chat_id)
-        bot.register_next_step_handler_by_chat_id(chat_id, _handle_parse_query)
-    else:
-        msg = _send_asset_photo(chat_id, "1.png", prompt, reply_markup=_back_markup())
-        bot.register_next_step_handler(msg, _handle_parse_query)
+    _PARSING_ORCHESTRATOR.start_parsing_flow(user_id, chat_id, card_message_id=card_message_id)
 
 
 def _handle_parse_query(message):
-    state = user_states.get(message.from_user.id)
-    user = _ensure_or_create_user(message.from_user.id)
-    if not state or not state.get("parse_mode") or not user or state.get("step") != "query":
-        bot.send_message(message.chat.id, "Состояние сброшено, начните заново.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    raw = (message.text or "").strip()
-    if raw.lower() == "повторить" and user.get("last_query"):
-        query = user["last_query"]
-    elif raw:
-        if len(raw) > MAX_TOPIC_LENGTH:
-            bot.send_message(message.chat.id, f"Запрос не должен быть длиннее {MAX_TOPIC_LENGTH} символов.", reply_markup=_back_markup())
-            user_states.pop(message.from_user.id, None)
-            return
-        query = raw
-    else:
-        bot.send_message(message.chat.id, "Пустой запрос. Попробуйте снова.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    state["query"] = query
-    state["step"] = "date_from"
-    last_range = user.get("last_range") or {}
-    prompt = f"📅 Введите дату начала ({DATE_FORMAT}), не старше {HISTORY_LIMIT_MONTHS} месяцев."
-    if last_range.get("from"):
-        prompt += f"\nМожно ввести 'повторить' чтобы использовать прошлый диапазон: {last_range.get('from')} - {last_range.get('to')}"
-    bot.clear_step_handler_by_chat_id(message.chat.id)
-    msg = bot.send_message(message.chat.id, prompt, reply_markup=_back_markup())
-    bot.register_next_step_handler(msg, _handle_parse_date_from)
+    _PARSING_ORCHESTRATOR.handle_parse_query(message)
 
 
 def _handle_parse_date_from(message):
-    state = user_states.get(message.from_user.id)
-    user = _ensure_or_create_user(message.from_user.id)
-    if not state or not state.get("parse_mode") or not user or state.get("step") != "date_from":
-        bot.send_message(message.chat.id, "Состояние сброшено, начните заново.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    raw = (message.text or "").strip()
-    last_range = user.get("last_range", {})
-    if raw.lower() == "повторить" and user.get("last_range", {}).get("from"):
-        date_from_raw = last_range.get("from")
-        date_from = _parse_date(date_from_raw)
-    else:
-        date_from_raw = raw
-        date_from = _parse_date(date_from_raw)
-    if not date_from:
-        bot.send_message(message.chat.id, f"Неверный формат. Используйте {DATE_FORMAT}.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    if not _within_history_limit(date_from):
-        bot.send_message(message.chat.id, f"Дата начала должна быть не старше {HISTORY_LIMIT_MONTHS} месяцев.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    state["parse_date_from"] = date_from_raw
-    # Если запросили "повторить" и есть сохранённый конец диапазона — используем его и завершаем без дополнительного вопроса
-    if raw.lower() == "повторить" and last_range.get("to"):
-        date_to_raw = last_range["to"]
-        date_to = _parse_date(date_to_raw)
-        if not date_to:
-            bot.send_message(message.chat.id, f"Неверный сохранённый конец диапазона. Введите заново.", reply_markup=_back_markup())
-            user_states.pop(message.from_user.id, None)
-            return
-        if date_to < date_from:
-            bot.send_message(message.chat.id, "Сохранённая дата окончания раньше даты начала. Введите заново.", reply_markup=_back_markup())
-            user_states.pop(message.from_user.id, None)
-            return
-        if not _within_history_limit(date_to):
-            bot.send_message(message.chat.id, f"Дата окончания должна быть не старше {HISTORY_LIMIT_MONTHS} месяцев.", reply_markup=_back_markup())
-            user_states.pop(message.from_user.id, None)
-            return
-        _complete_parsing(message, user, state, date_from_raw, date_to_raw, date_from, date_to)
-        return
-    state["step"] = "date_to"
-    bot.clear_step_handler_by_chat_id(message.chat.id)
-    msg = bot.send_message(
-        message.chat.id,
-        f"📅 Введите дату окончания ({DATE_FORMAT}), не раньше даты начала.",
-        reply_markup=_back_markup(),
-    )
-    bot.register_next_step_handler(msg, _handle_parse_date_to)
+    _PARSING_ORCHESTRATOR.handle_parse_date_from(message)
 
 
 def _handle_parse_date_to(message):
-    state = user_states.get(message.from_user.id)
-    if not state or not state.get("parse_mode") or "parse_date_from" not in state or state.get("step") != "date_to":
-        bot.send_message(message.chat.id, "Состояние сброшено, начните заново.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    user = _ensure_or_create_user(message.from_user.id)
-    raw = (message.text or "").strip()
-    if raw.lower() == "повторить" and user and user.get("last_range", {}).get("to"):
-        date_to_raw = user["last_range"]["to"]
-        date_to = _parse_date(date_to_raw)
-    else:
-        date_to_raw = raw
-        date_to = _parse_date(date_to_raw)
-    if not date_to:
-        bot.send_message(message.chat.id, f"Неверный формат. Используйте {DATE_FORMAT}.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    date_from = _parse_date(state["parse_date_from"])
-    if not date_from or date_to < date_from:
-        bot.send_message(message.chat.id, "Дата окончания должна быть не раньше даты начала.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    if not _within_history_limit(date_to):
-        bot.send_message(message.chat.id, f"Дата окончания должна быть не старше {HISTORY_LIMIT_MONTHS} месяцев.", reply_markup=_back_markup())
-        user_states.pop(message.from_user.id, None)
-        return
-    _complete_parsing(message, user, state, state["parse_date_from"], date_to_raw, date_from, date_to)
+    _PARSING_ORCHESTRATOR.handle_parse_date_to(message)
 
+
+_PARSING_ORCHESTRATOR.set_handlers(
+    handle_query=_handle_parse_query,
+    handle_date_from=_handle_parse_date_from,
+    handle_date_to=_handle_parse_date_to,
+)
 
 def _complete_parsing(message, user, state, date_from_raw: str, date_to_raw: str, date_from: datetime, date_to: datetime):
+    parsing_log = _get_parsing_logger()
     channels = user.get("channels", [])
     if not channels:
-        bot.send_message(message.chat.id, "Нет настроенных каналов. Добавьте их в меню каналов.", reply_markup=_back_markup())
+        bot.send_message(message.chat.id, "Нет настроенных каналов.", reply_markup=_back_markup())
         user_states.pop(message.from_user.id, None)
         return
     query = state.get("query")
@@ -1136,7 +754,6 @@ def _complete_parsing(message, user, state, date_from_raw: str, date_to_raw: str
         return
 
     oldest_allowed = datetime.utcnow() - timedelta(days=30 * HISTORY_LIMIT_MONTHS)
-
     progress_msg = bot.send_message(message.chat.id, "⏳ Парсинг: 0%")
     progress_message_id = progress_msg.message_id
     progress_state = {"percent": -1, "ts": 0.0}
@@ -1156,16 +773,22 @@ def _complete_parsing(message, user, state, date_from_raw: str, date_to_raw: str
             pass
 
     try:
+        parsing_log.info(
+            "event=PARSE_EXEC_START user_id=%s channels=%s date_from=%s date_to=%s query_len=%s",
+            message.from_user.id,
+            len(channels),
+            date_from_raw,
+            date_to_raw,
+            len(query),
+        )
         total_found, logs = _run_telethon(
             _parse_with_telethon(message.from_user.id, channels, query, date_from, date_to, progress_cb=progress_cb)
         )
         user["last_parse"] = f"{date_from_raw} - {date_to_raw}"
         user["last_query"] = query
         user["last_range"] = {"from": date_from_raw, "to": date_to_raw}
-        data = _load_storage()
-        data["users"][str(message.from_user.id)] = user
-        _save_storage(data)
-        # Сохраняем черновик для генерации поста (обновляется при каждом парсинге)
+        _upsert_user(message.from_user.id, user)
+
         draft_context = _truncate_text("\n\n".join(logs), AI_MAX_INPUT_CHARS)
         _save_draft(
             message.from_user.id,
@@ -1178,13 +801,10 @@ def _complete_parsing(message, user, state, date_from_raw: str, date_to_raw: str
                 "materials": draft_context,
             },
         )
-        # Отправляем предварительный отчёт без материалов, но с краткой сводкой по каналам
+
         summary_lines = []
         for line in logs:
-            if "\n" in line:
-                summary_lines.append(line.split("\n", 1)[0])
-            else:
-                summary_lines.append(line)
+            summary_lines.append(line.split("\n", 1)[0] if "\n" in line else line)
         summary_text = "\n".join(summary_lines) if summary_lines else "Без подробностей."
         _send_asset_photo(
             message.chat.id,
@@ -1202,40 +822,35 @@ def _complete_parsing(message, user, state, date_from_raw: str, date_to_raw: str
             try:
                 context_text = _truncate_text("\n\n".join(logs), AI_MAX_INPUT_CHARS)
                 system_prompt = (
-                    "Ты помощник, который отвечает на основе материалов из Telegram-каналов. "
-                    "Не выдумывай факты. Если данных недостаточно, скажи об этом. "
-                    "Выбери только самую нужную информацию, не надо расписывать каждый пост."
+                    "You answer based on Telegram materials. "
+                    "Do not invent facts. If there is not enough data, say so."
                 )
                 user_prompt = (
-                    f"Запрос пользователя: {query}\n"
-                    f"Диапазон дат: {date_from_raw} - {date_to_raw}\n"
-                    f"Собрано сообщений: {total_found}\n\n"
-                    "Материалы:\n"
+                    f"User query: {query}\n"
+                    f"Date range: {date_from_raw} - {date_to_raw}\n"
+                    f"Collected messages: {total_found}\n\n"
+                    "Materials:\n"
                     f"{context_text}\n\n"
-                    "Сформируй ответ по запросу пользователя."
+                    "Provide the best possible answer."
                 )
-                ai_text = openai_client.generate_answer(
-                    user_prompt=user_prompt,
-                    system_prompt=system_prompt,
-                )
+                ai_text = openai_client.generate_answer(user_prompt=user_prompt, system_prompt=system_prompt)
                 ai_text = _truncate_text(ai_text, AI_MAX_OUTPUT_CHARS)
                 if ai_text.strip():
-                    _send_long_text(message.chat.id, _render_ai_html(ai_text), parse_mode="HTML")
+                    _send_long_text(message.chat.id, build_ai_answer_message(ai_text), parse_mode="HTML")
             except Exception as e:  # noqa: BLE001
+                parsing_log.warning("event=PARSE_AI_ERROR user_id=%s error=%s", message.from_user.id, e)
                 bot.send_message(message.chat.id, f"Ошибка AI-ответа: {e}")
+
+        parsing_log.info("event=PARSE_EXEC_SUCCESS user_id=%s total_found=%s", message.from_user.id, total_found)
     except Exception as e:  # noqa: BLE001
-        bot.send_message(
-            message.chat.id,
-            f"Ошибка парсинга: {e}",
-            reply_markup=_back_markup(),
-        )
+        parsing_log.warning("event=PARSE_EXEC_FAILED user_id=%s error=%s", message.from_user.id, e)
+        bot.send_message(message.chat.id, f"Ошибка парсинга: {e}", reply_markup=_back_markup())
     finally:
         try:
             bot.delete_message(message.chat.id, progress_message_id)
         except Exception:
             pass
     user_states.pop(message.from_user.id, None)
-
 
 @bot.message_handler(func=lambda m: m.text == "Список каналов")
 def handle_list_channels(message):
@@ -1304,8 +919,7 @@ def _handle_delete_choice(message):
         return
     removed = channels.pop(idx - 1)
     data = _load_storage()
-    data["users"][str(message.from_user.id)] = user
-    _save_storage(data)
+    _upsert_user(message.from_user.id, user)
     user_states.pop(message.from_user.id, None)
     bot.send_message(
         message.chat.id,
@@ -1383,8 +997,7 @@ def _handle_edit_channel_value(message):
     channels[idx]["channel"] = new_channel
 
     data = _load_storage()
-    data["users"][str(message.from_user.id)] = user
-    _save_storage(data)
+    _upsert_user(message.from_user.id, user)
     user_states.pop(message.from_user.id, None)
 
     bot.send_message(
@@ -1431,7 +1044,7 @@ def _handle_post_request(message):
         )
         ai_text = _truncate_text(ai_text, AI_MAX_OUTPUT_CHARS)
         if ai_text.strip():
-            _send_long_text(message.chat.id, _render_ai_html(ai_text), parse_mode="HTML")
+            _send_long_text(message.chat.id, build_ai_answer_message(ai_text), parse_mode="HTML")
     except Exception as e:  # noqa: BLE001
         bot.send_message(message.chat.id, f"Ошибка генерации поста: {e}")
     finally:
@@ -1480,8 +1093,7 @@ def _handle_channel_input(message):
     channel_entry = {"channel": channel}
     user.setdefault("channels", []).append(channel_entry)
     data = _load_storage()
-    data["users"][str(message.from_user.id)] = user
-    _save_storage(data)
+    _upsert_user(message.from_user.id, user)
     user_states.pop(message.from_user.id, None)
     bot.send_message(
         message.chat.id,
@@ -1597,3 +1209,4 @@ def handle_inline(call):
 if __name__ == "__main__":
     bot.set_my_commands([types.BotCommand("start", "Открыть меню")])
     bot.infinity_polling()
+
