@@ -24,3 +24,4 @@
 - 2026-03-09: disabled `TELETHON_SESSION` fallback for user parsing; parsing now requires a valid user MTProto session file. Reduced session auth cache TTL from 120s to 30s.
 - 2026-03-10: published current main state to GitHub repository origin (https://github.com/Cron3xxxx/project.git), commit 2b98980.
 - 2026-03-10: fixed README.md mojibake tail lines after publication; restored readable Russian bullets for auth success deduplication, TELETHON_SESSION fallback removal, and auth-cache TTL update.
+- 2026-03-10: README.md fully rewritten in clean UTF-8 Russian to eliminate global mojibake; preserved required sections (project description, setup, config, implemented features, changelog, testing, limitations/next steps).
