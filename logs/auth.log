@@ -1,0 +1,591 @@
+2026-02-03 17:55:01,694 INFO link_start user_id=1562297545
+2026-02-03 17:55:13,154 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 17:55:23,800 WARNING code_verify_failed user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 17:59:13,006 INFO link_start user_id=1562297545
+2026-02-03 17:59:39,679 INFO link_start user_id=1562297545
+2026-02-03 17:59:53,052 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 18:00:02,858 WARNING code_verify_failed user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:07:36,715 INFO link_start user_id=1562297545
+2026-02-03 18:07:46,738 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 18:07:57,427 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:08:12,060 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:13:57,185 INFO link_start user_id=1562297545
+2026-02-03 18:14:08,261 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 18:14:28,314 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:18:25,794 INFO link_start user_id=7767438870
+2026-02-03 18:18:37,090 INFO link_start user_id=7767438870
+2026-02-03 18:19:04,702 INFO code_sent user_id=7767438870 phone=+79***21
+2026-02-03 18:19:16,408 WARNING code_invalid user_id=7767438870 phone=+79***21 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:19:59,628 WARNING code_invalid user_id=7767438870 phone=+79***21 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:20:11,757 WARNING code_invalid user_id=7767438870 phone=+79***21 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:25:07,761 INFO link_start user_id=7767438870
+2026-02-03 18:25:18,967 INFO code_sent user_id=7767438870 phone=+79***21
+2026-02-03 18:25:48,550 INFO link_success user_id=7767438870 phone=+79***21
+2026-02-03 18:28:14,665 INFO link_start user_id=1562297545
+2026-02-03 18:28:27,650 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 18:28:53,850 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-02-03 18:29:01,218 WARNING 2fa_failed user_id=1562297545 phone=+79***86 error=You also need to provide a phone_code_hash.
+2026-02-03 18:30:17,514 INFO link_start user_id=1562297545
+2026-02-03 18:30:28,622 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 18:30:53,511 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-02-03 18:30:59,330 INFO link_success user_id=1562297545 phone=+79***86 (2fa)
+2026-02-03 18:31:26,927 INFO link_start user_id=7767438870
+2026-02-03 18:31:38,501 INFO code_sent user_id=7767438870 phone=+79***21
+2026-02-03 18:32:01,718 INFO link_success user_id=7767438870 phone=+79***21
+2026-02-03 18:36:37,005 INFO link_start user_id=320512340
+2026-02-03 18:36:47,744 INFO code_sent user_id=320512340 phone=+79***59
+2026-02-03 18:37:07,674 WARNING code_invalid user_id=320512340 phone=+79***59 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:37:33,904 WARNING code_invalid user_id=320512340 phone=+79***59 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-03 18:41:37,824 INFO link_start user_id=320512340
+2026-02-03 18:41:49,436 INFO code_sent user_id=320512340 phone=+79***59
+2026-02-03 18:42:14,460 INFO link_success user_id=320512340 phone=+79***59
+2026-02-03 18:48:12,756 INFO link_start user_id=7622313319
+2026-02-03 18:48:29,631 INFO code_sent user_id=7622313319 phone=+79***69
+2026-02-03 18:49:31,915 INFO link_success user_id=7622313319 phone=+79***69
+2026-02-03 19:21:58,578 INFO link_start user_id=7547865680
+2026-02-03 19:22:31,241 INFO code_sent user_id=7547865680 phone=+79***48
+2026-02-03 19:22:59,659 INFO link_success user_id=7547865680 phone=+79***48
+2026-02-03 19:49:46,275 INFO link_start user_id=1562297545
+2026-02-03 19:55:05,256 INFO link_start user_id=1562297545
+2026-02-03 19:55:16,115 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-03 19:55:39,970 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-02-03 19:55:46,627 INFO link_success user_id=1562297545 phone=+79***86 (2fa)
+2026-02-03 20:56:00,052 INFO link_start user_id=7622313319
+2026-02-03 20:56:16,850 INFO code_sent user_id=7622313319 phone=+79***69
+2026-02-03 20:57:37,120 INFO link_success user_id=7622313319 phone=+79***69
+2026-02-20 18:26:53,443 INFO link_start user_id=1562297545
+2026-02-20 18:27:01,752 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-20 18:49:32,173 INFO link_start user_id=1562297545
+2026-02-20 18:49:37,472 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-20 18:50:52,552 INFO link_start user_id=1562297545
+2026-02-20 18:51:00,301 WARNING code_send_failed user_id=1562297545 phone=+79***86 error=name 'TG_FORCE_SMS' is not defined
+2026-02-20 18:51:33,894 INFO link_start user_id=1562297545
+2026-02-20 18:51:57,093 INFO code_sent_detail user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None force_sms=True hash=347578e1aafd495044
+2026-02-20 18:51:57,093 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-20 18:55:04,912 INFO link_start user_id=1562297545
+2026-02-20 18:55:50,450 INFO link_start user_id=1562297545
+2026-02-20 18:55:54,440 INFO link_start user_id=1562297545
+2026-02-20 18:56:27,513 INFO link_start user_id=1562297545
+2026-02-20 18:56:34,119 INFO code_sent_detail user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None force_sms=True hash=1680de439900030818
+2026-02-20 18:56:34,119 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-20 19:59:41,480 INFO link_start user_id=320512340
+2026-02-20 20:00:02,192 INFO code_sent_detail user_id=320512340 phone=+79***59 type=SentCodeTypeApp next_type=unknown timeout=None force_sms=True hash=d209974d2e2d15c620
+2026-02-20 20:00:02,192 INFO code_sent user_id=320512340 phone=+79***59
+2026-02-22 15:36:14,617 INFO link_start user_id=1562297545
+2026-02-22 15:36:27,223 INFO code_sent_detail user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None force_sms=False hash=90aa7be8446b4fa829
+2026-02-22 15:36:27,223 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 15:41:37,404 INFO link_start user_id=1562297545
+2026-02-22 15:41:48,664 INFO phone_input user_id=1562297545
+2026-02-22 15:41:48,664 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 15:41:48,671 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 15:41:50,886 WARNING code_send_failed user_id=1562297545 phone=+79***86 error=name 'TG_FORCE_SMS' is not defined
+2026-02-22 15:42:47,127 INFO link_start user_id=1562297545
+2026-02-22 15:42:53,878 INFO phone_input user_id=1562297545
+2026-02-22 15:42:53,878 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 15:42:53,878 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 15:42:56,516 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 15:42:56,753 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=a4c95f05ee3a4043d1
+2026-02-22 15:42:56,754 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 15:44:49,772 INFO link_start user_id=1562297545
+2026-02-22 15:44:53,202 INFO phone_input user_id=1562297545
+2026-02-22 15:44:53,202 WARNING phone_invalid user_id=1562297545
+2026-02-22 15:45:18,929 INFO link_start user_id=1562297545
+2026-02-22 15:45:21,368 INFO phone_input user_id=1562297545
+2026-02-22 15:45:21,368 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 15:45:21,369 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 15:45:23,519 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=True
+2026-02-22 15:45:23,699 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=715645b855f3afe244
+2026-02-22 15:45:23,699 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 15:45:39,022 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-22 15:45:39,023 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 15:45:39,844 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=True
+2026-02-22 15:45:40,055 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=d79d49b05b89b67a9e
+2026-02-22 15:46:38,090 INFO link_start user_id=1562297545
+2026-02-22 15:46:39,521 INFO phone_input user_id=1562297545
+2026-02-22 15:46:39,522 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 15:46:39,524 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 15:46:41,822 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 15:46:42,007 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=f9d123eb6495f56e58
+2026-02-22 15:46:42,007 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 15:46:50,414 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-02-22 15:46:56,102 INFO link_success user_id=1562297545 phone=+79***86 (2fa)
+2026-02-22 16:06:08,015 INFO link_start user_id=1562297545
+2026-02-22 16:06:10,396 INFO phone_input user_id=1562297545
+2026-02-22 16:06:10,396 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 16:06:10,396 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 16:06:13,288 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 16:06:13,517 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=4dccb462f62bc54bb5
+2026-02-22 16:06:13,517 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 16:06:20,126 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The phone code entered was invalid (caused by SignInRequest)
+2026-02-22 16:06:20,127 INFO session_deleted user_id=1562297545 reason=code_invalid path=storage\sessions\1562297545.session
+2026-02-22 16:06:20,127 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 16:06:22,341 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 16:06:22,803 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=537a4bfed1af4c5be2
+2026-02-22 16:06:30,983 WARNING session_delete_failed user_id=1562297545 reason=code_too_short path=storage\sessions\1562297545.session error=[WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'storage\\sessions\\1562297545.session'
+2026-02-22 16:07:15,956 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage\sessions\1562297545.session
+2026-02-22 16:07:15,956 INFO link_start user_id=1562297545
+2026-02-22 16:07:18,259 INFO phone_input user_id=1562297545
+2026-02-22 16:07:18,259 INFO phone_normalized user_id=1562297545 phone=+18***18
+2026-02-22 16:07:18,259 INFO code_send_start user_id=1562297545 phone=+18***18 session_path=storage\sessions\1562297545.session
+2026-02-22 16:07:20,600 INFO code_send_request user_id=1562297545 phone=+18***18 force_sms=False
+2026-02-22 16:07:21,229 WARNING code_send_failed user_id=1562297545 phone=+18***18 error=The phone number is invalid (caused by SendCodeRequest)
+2026-02-22 16:07:21,392 WARNING session_delete_failed user_id=1562297545 reason=code_send_failed path=storage\sessions\1562297545.session error=[WinError 32] Процесс не может получить доступ к файлу, так как этот файл занят другим процессом: 'storage\\sessions\\1562297545.session'
+2026-02-22 16:07:26,337 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage\sessions\1562297545.session
+2026-02-22 16:07:27,566 INFO link_start user_id=1562297545
+2026-02-22 16:07:29,472 INFO phone_input user_id=1562297545
+2026-02-22 16:07:29,472 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 16:07:29,473 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 16:07:31,654 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 16:07:31,824 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=8459ecd162439347db
+2026-02-22 16:07:31,824 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 16:07:40,516 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-22 16:07:40,516 INFO session_deleted user_id=1562297545 reason=code_invalid path=storage\sessions\1562297545.session
+2026-02-22 16:07:40,516 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage\sessions\1562297545.session
+2026-02-22 16:07:42,575 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 16:07:42,779 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=1400168c51a18deaf0
+2026-02-22 16:07:54,726 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-02-22 16:08:01,165 WARNING 2fa_invalid user_id=1562297545 phone=+79***86
+2026-02-22 16:08:09,424 WARNING 2fa_failed user_id=1562297545 phone=+79***86 error=Сессия для 2FA не найдена. Начните привязку заново.
+2026-02-22 16:08:09,545 INFO session_deleted user_id=1562297545 reason=2fa_failed path=storage\sessions\1562297545.session
+2026-02-22 14:55:21,773 INFO link_start user_id=1562297545
+2026-02-22 14:55:29,336 INFO phone_input user_id=1562297545
+2026-02-22 14:55:29,336 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 14:55:29,338 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-02-22 14:55:30,564 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 14:55:30,638 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=76b6e0830fb56091a8
+2026-02-22 14:55:30,638 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 14:56:04,086 INFO link_start user_id=7767438870
+2026-02-22 14:56:24,746 INFO phone_input user_id=7767438870
+2026-02-22 14:56:24,747 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-02-22 14:56:24,747 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-02-22 14:56:27,154 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-02-22 14:56:27,233 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=9fc22f54b4cd17d469
+2026-02-22 14:56:27,234 INFO code_sent user_id=7767438870 phone=+79***21
+2026-02-22 19:05:47,558 INFO session_deleted user_id=1562297545 reason=code_too_short path=storage/sessions/1562297545.session
+2026-02-22 19:05:53,296 INFO link_start user_id=1562297545
+2026-02-22 19:06:00,617 INFO phone_input user_id=1562297545
+2026-02-22 19:06:00,617 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-22 19:06:00,618 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-02-22 19:06:02,481 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-22 19:06:02,554 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=dea92031e329d1891d
+2026-02-22 19:06:02,555 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-22 19:06:10,271 INFO session_deleted user_id=1562297545 reason=code_too_short path=storage/sessions/1562297545.session
+2026-02-23 14:00:23,188 INFO link_start user_id=1562297545
+2026-02-23 14:00:29,098 INFO phone_input user_id=1562297545
+2026-02-23 14:00:29,098 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-23 14:00:29,100 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-02-23 14:00:30,960 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-23 14:00:31,085 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=98b95ad50c0f5dba6f
+2026-02-23 14:00:31,086 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-24 07:35:16,122 INFO session_deleted user_id=1562297545 reason=code_too_short path=storage/sessions/1562297545.session
+2026-02-24 07:35:19,582 INFO link_start user_id=1562297545
+2026-02-24 07:35:26,110 INFO phone_input user_id=1562297545
+2026-02-24 07:35:26,110 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-24 07:35:26,111 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-02-24 07:35:27,274 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-24 07:35:27,323 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=b1b0b207fc383ac8ba
+2026-02-24 07:35:27,323 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-24 11:44:01,629 INFO link_start user_id=1166953344
+2026-02-24 11:44:17,953 INFO phone_input user_id=1166953344
+2026-02-24 11:44:17,953 INFO phone_normalized user_id=1166953344 phone=+79***96
+2026-02-24 11:44:17,954 INFO code_send_start user_id=1166953344 phone=+79***96 session_path=storage/sessions/1166953344.session
+2026-02-24 11:44:19,624 INFO code_send_request user_id=1166953344 phone=+79***96 force_sms=False
+2026-02-24 11:44:19,689 INFO code_send_response user_id=1166953344 phone=+79***96 type=SentCodeTypeApp next_type=unknown timeout=None hash=45ae34c1c97ceebf71
+2026-02-24 11:44:19,690 INFO code_sent user_id=1166953344 phone=+79***96
+2026-02-24 11:45:13,152 INFO session_deleted user_id=1562297545 reason=code_too_short path=storage/sessions/1562297545.session
+2026-02-24 11:45:14,315 INFO link_start user_id=1562297545
+2026-02-24 11:45:21,672 INFO phone_input user_id=1562297545
+2026-02-24 11:45:21,672 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-02-24 11:45:21,673 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-02-24 11:45:22,903 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-24 11:45:22,978 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=68436a053f542c0827
+2026-02-24 11:45:22,978 INFO code_sent user_id=1562297545 phone=+79***86
+2026-02-24 11:45:44,702 WARNING code_invalid user_id=1562297545 phone=+79***86 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-24 11:45:44,703 INFO session_deleted user_id=1562297545 reason=code_invalid path=storage/sessions/1562297545.session
+2026-02-24 11:45:44,704 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-02-24 11:45:46,594 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-02-24 11:45:46,737 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=fb0a5fcf70e9f6ea30
+2026-02-24 11:46:05,417 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-02-24 11:46:12,378 INFO link_success user_id=1562297545 phone=+79***86 (2fa)
+2026-02-24 11:46:22,132 WARNING code_invalid user_id=1166953344 phone=+79***96 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-24 11:46:22,132 INFO session_deleted user_id=1166953344 reason=code_invalid path=storage/sessions/1166953344.session
+2026-02-24 11:46:22,132 INFO code_send_start user_id=1166953344 phone=+79***96 session_path=storage/sessions/1166953344.session
+2026-02-24 11:46:23,331 INFO code_send_request user_id=1166953344 phone=+79***96 force_sms=False
+2026-02-24 11:46:23,393 INFO code_send_response user_id=1166953344 phone=+79***96 type=SentCodeTypeApp next_type=unknown timeout=None hash=9d2f41617371627b5d
+2026-02-24 11:47:49,356 INFO link_success user_id=1166953344 phone=+79***96
+2026-02-24 16:39:19,395 INFO session_deleted user_id=1166953344 reason=session_not_authorized path=storage/sessions/1166953344.session
+2026-02-24 16:39:31,108 INFO link_start user_id=1166953344
+2026-02-24 16:39:40,151 INFO phone_input user_id=1166953344
+2026-02-24 16:39:40,151 INFO phone_normalized user_id=1166953344 phone=+79***96
+2026-02-24 16:39:40,154 INFO code_send_start user_id=1166953344 phone=+79***96 session_path=storage/sessions/1166953344.session
+2026-02-24 16:39:41,497 INFO code_send_request user_id=1166953344 phone=+79***96 force_sms=False
+2026-02-24 16:39:41,577 INFO code_send_response user_id=1166953344 phone=+79***96 type=SentCodeTypeApp next_type=unknown timeout=None hash=0957023c229bfb48f2
+2026-02-24 16:39:41,577 INFO code_sent user_id=1166953344 phone=+79***96
+2026-02-24 16:40:16,538 INFO session_deleted user_id=1166953344 reason=code_too_short path=storage/sessions/1166953344.session
+2026-02-24 16:52:29,960 INFO link_start user_id=7547865680
+2026-02-24 16:52:36,585 INFO phone_input user_id=7547865680
+2026-02-24 16:52:36,585 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-02-24 16:52:36,586 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-02-24 16:52:38,342 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-02-24 16:52:38,434 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=07d6936f7f03ac2737
+2026-02-24 16:52:38,435 INFO code_sent user_id=7547865680 phone=+79***48
+2026-02-24 16:53:03,630 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-02-24 16:53:05,654 INFO link_start user_id=7767438870
+2026-02-24 16:53:11,531 INFO phone_input user_id=7767438870
+2026-02-24 16:53:11,531 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-02-24 16:53:11,532 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-02-24 16:53:13,348 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-02-24 16:53:13,397 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=1774bebb53a3754aae
+2026-02-24 16:53:13,398 INFO code_sent user_id=7767438870 phone=+79***21
+2026-02-25 07:56:52,048 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-02-25 07:56:54,059 INFO link_start user_id=7547865680
+2026-02-25 07:57:00,404 INFO phone_input user_id=7547865680
+2026-02-25 07:57:00,404 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-02-25 07:57:00,406 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-02-25 07:57:02,484 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-02-25 07:57:02,516 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=89a73981f3c5cdda26
+2026-02-25 07:57:02,517 INFO code_sent user_id=7547865680 phone=+79***48
+2026-02-25 10:44:39,352 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-02-25 12:06:01,495 INFO link_start user_id=1166953344
+2026-02-25 12:06:09,896 INFO phone_input user_id=1166953344
+2026-02-25 12:06:09,896 INFO phone_normalized user_id=1166953344 phone=+79***96
+2026-02-25 12:06:09,899 INFO code_send_start user_id=1166953344 phone=+79***96 session_path=storage/sessions/1166953344.session
+2026-02-25 12:06:11,338 INFO code_send_request user_id=1166953344 phone=+79***96 force_sms=False
+2026-02-25 12:06:11,413 INFO code_send_response user_id=1166953344 phone=+79***96 type=SentCodeTypeApp next_type=unknown timeout=None hash=728b0271480967a8cf
+2026-02-25 12:06:11,413 INFO code_sent user_id=1166953344 phone=+79***96
+2026-02-25 12:06:46,334 INFO link_success user_id=1166953344 phone=+79***96
+2026-02-25 12:14:49,272 INFO link_start user_id=5211149201
+2026-02-25 12:14:59,055 INFO phone_input user_id=5211149201
+2026-02-25 12:14:59,056 INFO phone_normalized user_id=5211149201 phone=+89***13
+2026-02-25 12:14:59,057 INFO code_send_start user_id=5211149201 phone=+89***13 session_path=storage/sessions/5211149201.session
+2026-02-25 12:15:00,585 INFO code_send_request user_id=5211149201 phone=+89***13 force_sms=False
+2026-02-25 12:15:00,648 INFO code_send_response user_id=5211149201 phone=+89***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=84fc7b062ed6cc9e8e
+2026-02-25 12:15:00,648 INFO code_sent user_id=5211149201 phone=+89***13
+2026-02-25 12:51:08,613 WARNING code_invalid user_id=5211149201 phone=+89***13 error=The confirmation code has expired (caused by SignInRequest)
+2026-02-25 12:51:08,614 INFO session_deleted user_id=5211149201 reason=code_invalid path=storage/sessions/5211149201.session
+2026-02-25 12:51:08,614 INFO code_send_start user_id=5211149201 phone=+89***13 session_path=storage/sessions/5211149201.session
+2026-02-25 12:51:09,790 INFO code_send_request user_id=5211149201 phone=+89***13 force_sms=False
+2026-02-25 12:51:09,860 INFO code_send_response user_id=5211149201 phone=+89***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=b9a091ff0dfc9ec8ac
+2026-02-25 12:51:23,428 INFO 2fa_required user_id=5211149201 phone=+89***13
+2026-02-26 12:59:18,197 WARNING 2fa_failed user_id=5211149201 phone=+89***13 error=The key is not registered in the system (caused by GetPasswordRequest)
+2026-02-26 12:59:18,325 INFO session_deleted user_id=5211149201 reason=2fa_failed path=storage/sessions/5211149201.session
+2026-02-26 12:59:24,667 INFO link_start user_id=5211149201
+2026-02-26 12:59:33,647 INFO phone_input user_id=5211149201
+2026-02-26 12:59:33,647 INFO phone_normalized user_id=5211149201 phone=+89***13
+2026-02-26 12:59:33,649 INFO code_send_start user_id=5211149201 phone=+89***13 session_path=storage/sessions/5211149201.session
+2026-02-26 12:59:35,120 INFO code_send_request user_id=5211149201 phone=+89***13 force_sms=False
+2026-02-26 12:59:35,234 INFO code_send_response user_id=5211149201 phone=+89***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=00a6c5eeed9c75c372
+2026-02-26 12:59:35,234 INFO code_sent user_id=5211149201 phone=+89***13
+2026-02-26 12:59:50,742 INFO 2fa_required user_id=5211149201 phone=+89***13
+2026-02-26 13:13:15,181 WARNING 2fa_invalid user_id=5211149201 phone=+89***13
+2026-02-26 13:13:28,527 WARNING 2fa_failed user_id=5211149201 phone=+89***13 error=Сессия для 2FA не найдена. Начните привязку заново.
+2026-02-26 13:13:28,566 INFO session_deleted user_id=5211149201 reason=2fa_failed path=storage/sessions/5211149201.session
+2026-02-26 13:13:48,074 INFO link_start user_id=5211149201
+2026-02-28 06:05:38,234 INFO phone_input user_id=5211149201
+2026-02-28 06:05:38,236 INFO phone_normalized user_id=5211149201 phone=+89***13
+2026-02-28 06:05:38,236 INFO code_send_start user_id=5211149201 phone=+89***13 session_path=storage/sessions/5211149201.session
+2026-02-28 06:05:39,059 INFO code_send_request user_id=5211149201 phone=+89***13 force_sms=False
+2026-02-28 06:05:39,109 INFO code_send_response user_id=5211149201 phone=+89***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=9086fbba03f3f0ac5f
+2026-02-28 06:05:39,109 INFO code_sent user_id=5211149201 phone=+89***13
+2026-02-28 06:05:53,128 INFO session_deleted user_id=5211149201 reason=code_too_short path=storage/sessions/5211149201.session
+2026-02-28 06:06:05,725 INFO link_start user_id=5211149201
+2026-02-28 06:06:13,895 INFO phone_input user_id=5211149201
+2026-02-28 06:06:13,896 INFO phone_normalized user_id=5211149201 phone=+89***13
+2026-02-28 06:06:13,897 INFO code_send_start user_id=5211149201 phone=+89***13 session_path=storage/sessions/5211149201.session
+2026-02-28 06:06:15,060 INFO code_send_request user_id=5211149201 phone=+89***13 force_sms=False
+2026-02-28 06:06:15,132 INFO code_send_response user_id=5211149201 phone=+89***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=5689439364375274fd
+2026-02-28 06:06:15,133 INFO code_sent user_id=5211149201 phone=+89***13
+2026-02-28 11:23:02,291 INFO session_deleted user_id=7547865680 reason=session_not_authorized path=storage/sessions/7547865680.session
+2026-02-28 11:23:02,292 INFO link_start user_id=7547865680
+2026-02-28 11:23:09,241 INFO phone_input user_id=7547865680
+2026-02-28 11:23:09,241 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-02-28 11:23:09,241 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-02-28 11:23:10,281 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-02-28 11:23:10,319 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=483753b4793ef46051
+2026-02-28 11:23:10,319 INFO code_sent user_id=7547865680 phone=+79***48
+2026-02-28 11:51:22,557 INFO link_start user_id=7767438870
+2026-02-28 11:51:30,036 INFO phone_input user_id=7767438870
+2026-02-28 11:51:30,036 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-02-28 11:51:30,038 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-02-28 11:51:31,501 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-02-28 11:51:31,546 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=265b656e8a69e8b53b
+2026-02-28 11:51:31,546 INFO code_sent user_id=7767438870 phone=+79***21
+2026-02-28 12:11:25,973 INFO session_deleted user_id=5211149201 reason=session_not_authorized path=storage/sessions/5211149201.session
+2026-02-28 12:11:25,973 INFO link_start user_id=5211149201
+2026-02-28 12:11:34,235 INFO phone_input user_id=5211149201
+2026-02-28 12:11:34,235 INFO phone_normalized user_id=5211149201 phone=+89***13
+2026-02-28 12:11:34,237 INFO code_send_start user_id=5211149201 phone=+89***13 session_path=storage/sessions/5211149201.session
+2026-02-28 12:11:35,412 INFO code_send_request user_id=5211149201 phone=+89***13 force_sms=False
+2026-02-28 12:11:35,465 INFO code_send_response user_id=5211149201 phone=+89***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=72c4733b5274eb3e58
+2026-02-28 12:11:35,466 INFO code_sent user_id=5211149201 phone=+89***13
+2026-02-28 22:53:00,778 INFO link_start user_id=1691012777
+2026-02-28 22:53:22,906 INFO phone_input user_id=1691012777
+2026-02-28 22:53:22,906 INFO phone_normalized user_id=1691012777 phone=+79***96
+2026-02-28 22:53:22,906 INFO code_send_start user_id=1691012777 phone=+79***96 session_path=storage/sessions/1691012777.session
+2026-02-28 22:53:23,869 INFO code_send_request user_id=1691012777 phone=+79***96 force_sms=False
+2026-02-28 22:53:23,925 INFO code_send_response user_id=1691012777 phone=+79***96 type=SentCodeTypeApp next_type=unknown timeout=None hash=a9afc4160803fa1a45
+2026-02-28 22:53:23,925 INFO code_sent user_id=1691012777 phone=+79***96
+2026-02-28 22:54:59,568 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-02-28 22:55:04,952 INFO link_start user_id=7547865680
+2026-02-28 22:55:10,732 INFO phone_input user_id=7547865680
+2026-02-28 22:55:10,732 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-02-28 22:55:10,734 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-02-28 22:55:12,062 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-02-28 22:55:12,090 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=4c5a9e2daaaaf6d442
+2026-02-28 22:55:12,090 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-01 07:50:31,678 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-01 07:50:34,184 INFO link_start user_id=7767438870
+2026-03-01 07:50:40,829 INFO phone_input user_id=7767438870
+2026-03-01 07:50:40,829 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-01 07:50:40,830 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-01 07:50:41,943 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-01 07:50:41,974 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=13a0a5f6cd1f399f7e
+2026-03-01 07:50:41,974 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-01 11:03:59,335 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-01 11:04:01,272 INFO link_start user_id=7767438870
+2026-03-01 11:04:07,165 INFO phone_input user_id=7767438870
+2026-03-01 11:04:07,165 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-01 11:04:07,167 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-01 11:04:08,445 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-01 11:04:08,477 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=cef514980f21515472
+2026-03-01 11:04:08,478 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-01 12:48:31,972 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-01 12:48:33,679 INFO link_start user_id=7547865680
+2026-03-01 12:48:39,155 INFO phone_input user_id=7547865680
+2026-03-01 12:48:39,156 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-01 12:48:39,157 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-01 12:48:40,289 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-01 12:48:40,323 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=0bd380d2f7ef3035a0
+2026-03-01 12:48:40,323 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-01 17:31:43,955 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-01 17:31:53,080 INFO link_start user_id=7547865680
+2026-03-01 17:32:03,047 INFO phone_input user_id=7547865680
+2026-03-01 17:32:03,047 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-01 17:32:03,048 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-01 17:32:05,366 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-01 17:32:05,433 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=2d70ee9a83d1f26012
+2026-03-01 17:32:05,434 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-01 17:32:34,625 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-01 17:32:36,215 INFO link_start user_id=7767438870
+2026-03-01 17:32:41,536 INFO phone_input user_id=7767438870
+2026-03-01 17:32:41,537 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-01 17:32:41,538 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-01 17:32:43,231 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-01 17:32:43,295 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=97b734340a091e0707
+2026-03-01 17:32:43,295 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-02 05:40:40,859 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-02 05:40:45,035 INFO link_start user_id=7767438870
+2026-03-02 05:40:51,458 INFO phone_input user_id=7767438870
+2026-03-02 05:40:51,458 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-02 05:40:51,460 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-02 05:40:52,572 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-02 05:40:52,609 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=d7640af6b674865679
+2026-03-02 05:40:52,609 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-02 10:02:25,990 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-02 10:02:30,849 INFO link_start user_id=7767438870
+2026-03-02 10:02:33,543 INFO phone_input user_id=7767438870
+2026-03-02 10:02:33,543 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-02 10:02:33,545 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-02 10:02:35,568 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-02 10:02:35,621 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=9a3ce46f8a69cdecad
+2026-03-02 10:02:35,621 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-02 14:54:47,633 INFO session_deleted user_id=1691012777 reason=code_too_short path=storage/sessions/1691012777.session
+2026-03-02 14:55:36,469 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-02 14:55:38,348 INFO link_start user_id=7767438870
+2026-03-02 14:55:44,311 INFO phone_input user_id=7767438870
+2026-03-02 14:55:44,311 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-02 14:55:44,313 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-02 14:55:46,556 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-02 14:55:46,604 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=eeec4a92b8b27a9631
+2026-03-02 14:55:46,604 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-02 14:58:58,924 INFO link_start user_id=1691012777
+2026-03-02 14:59:18,150 INFO phone_input user_id=1691012777
+2026-03-02 14:59:18,151 INFO phone_normalized user_id=1691012777 phone=+79***96
+2026-03-02 14:59:18,152 INFO code_send_start user_id=1691012777 phone=+79***96 session_path=storage/sessions/1691012777.session
+2026-03-02 14:59:19,367 INFO code_send_request user_id=1691012777 phone=+79***96 force_sms=False
+2026-03-02 14:59:19,434 INFO code_send_response user_id=1691012777 phone=+79***96 type=SentCodeTypeApp next_type=unknown timeout=None hash=6de3f5eaf9d75094d7
+2026-03-02 14:59:19,435 INFO code_sent user_id=1691012777 phone=+79***96
+2026-03-02 15:00:26,766 INFO 2fa_required user_id=1691012777 phone=+79***96
+2026-03-02 15:04:08,650 INFO link_success user_id=1691012777 phone=+79***96 (2fa)
+2026-03-02 18:05:21,512 INFO link_start user_id=7098988131
+2026-03-04 12:25:07,717 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-04 12:25:09,192 INFO link_start user_id=7547865680
+2026-03-04 12:25:20,339 INFO phone_input user_id=7547865680
+2026-03-04 12:25:20,339 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-04 12:25:20,340 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-04 12:25:21,556 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-04 12:25:21,593 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=e498073bc87d66bf34
+2026-03-04 12:25:21,594 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-04 12:25:41,403 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-04 12:25:43,953 INFO link_start user_id=7767438870
+2026-03-04 12:25:50,328 INFO phone_input user_id=7767438870
+2026-03-04 12:25:50,328 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-04 12:25:50,329 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-04 12:25:51,843 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-04 12:25:51,879 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=72b0d642021c3ca269
+2026-03-04 12:25:51,879 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-04 13:22:04,823 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-04 13:22:06,051 INFO link_start user_id=7547865680
+2026-03-04 13:22:11,316 INFO phone_input user_id=7547865680
+2026-03-04 13:22:11,316 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-04 13:22:11,318 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-04 13:22:13,220 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-04 13:22:13,251 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=67b97c3097affea6d5
+2026-03-04 13:22:13,251 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-04 18:05:03,651 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-04 18:05:04,901 INFO link_start user_id=7767438870
+2026-03-04 18:05:10,856 INFO phone_input user_id=7767438870
+2026-03-04 18:05:10,857 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-04 18:05:10,858 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-04 18:05:12,399 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-04 18:05:12,449 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=4c7932f136441e9411
+2026-03-04 18:05:12,449 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-05 13:10:50,576 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-05 13:10:52,319 INFO link_start user_id=7767438870
+2026-03-05 13:10:57,581 INFO phone_input user_id=7767438870
+2026-03-05 13:10:57,582 INFO phone_normalized user_id=7767438870 phone=+79***21
+2026-03-05 13:10:57,582 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-05 13:10:59,391 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-05 13:10:59,427 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=d763d7360df2c84a02
+2026-03-05 13:10:59,427 INFO code_sent user_id=7767438870 phone=+79***21
+2026-03-06 09:37:13,650 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-06 09:37:14,332 INFO link_start user_id=7547865680
+2026-03-06 09:37:20,705 INFO phone_input user_id=7547865680
+2026-03-06 09:37:20,706 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-06 09:37:20,707 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-06 09:37:21,816 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-06 09:37:21,858 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=98df86d47b2b18df11
+2026-03-06 09:37:21,858 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-07 15:52:31,042 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-07 15:52:33,448 INFO link_start user_id=7547865680
+2026-03-07 15:52:38,396 INFO phone_input user_id=7547865680
+2026-03-07 15:52:38,396 INFO phone_normalized user_id=7547865680 phone=+79***48
+2026-03-07 15:52:38,397 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-07 15:52:40,257 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-07 15:52:40,327 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=7098b2f70253dceb6e
+2026-03-07 15:52:40,328 INFO code_sent user_id=7547865680 phone=+79***48
+2026-03-08 22:39:26,130 INFO session_deleted user_id=1562297545 reason=session_not_authorized path=storage/sessions/1562297545.session
+2026-03-08 22:39:34,331 INFO link_start user_id=1562297545
+2026-03-08 22:39:40,631 INFO phone_input user_id=1562297545
+2026-03-08 22:39:40,631 INFO phone_normalized user_id=1562297545 phone=+79***86
+2026-03-08 22:39:40,632 INFO code_send_start user_id=1562297545 phone=+79***86 session_path=storage/sessions/1562297545.session
+2026-03-08 22:39:41,741 INFO code_send_request user_id=1562297545 phone=+79***86 force_sms=False
+2026-03-08 22:39:41,809 INFO code_send_response user_id=1562297545 phone=+79***86 type=SentCodeTypeApp next_type=unknown timeout=None hash=3e6b191998d56ba40f
+2026-03-08 22:39:41,809 INFO code_sent user_id=1562297545 phone=+79***86
+2026-03-08 22:39:50,791 INFO 2fa_required user_id=1562297545 phone=+79***86
+2026-03-08 22:39:55,586 INFO link_success user_id=1562297545 phone=+79***86 (2fa)
+2026-03-08 22:44:50,934 INFO session_deleted user_id=7767438870 reason=session_not_authorized path=storage/sessions/7767438870.session
+2026-03-08 22:44:50,934 INFO event=AUTH_LINK_START user_id=7767438870
+2026-03-08 22:44:56,253 INFO event=AUTH_PHONE_INPUT user_id=7767438870
+2026-03-08 22:44:56,253 INFO event=AUTH_PHONE_ACCEPTED user_id=7767438870 phone=+79***21
+2026-03-08 22:44:56,254 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-08 22:44:57,349 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-08 22:44:57,430 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=3ae376c2514b01710b
+2026-03-08 22:44:57,431 INFO event=AUTH_CODE_SENT user_id=7767438870 phone=+79***21
+2026-03-08 22:45:10,362 INFO event=AUTH_LINK_SUCCESS user_id=7767438870 phone=+79***21
+2026-03-08 23:25:23,930 INFO event=AUTH_LINK_START user_id=7098988131
+2026-03-08 23:28:31,284 INFO event=AUTH_PHONE_INPUT user_id=7098988131
+2026-03-08 23:28:31,284 WARNING event=AUTH_PHONE_INVALID user_id=7098988131
+2026-03-08 23:28:44,048 INFO event=AUTH_LINK_START user_id=7098988131
+2026-03-08 23:28:52,414 INFO event=AUTH_PHONE_INPUT user_id=7098988131
+2026-03-08 23:28:52,414 INFO event=AUTH_PHONE_ACCEPTED user_id=7098988131 phone=+79***33
+2026-03-08 23:28:52,416 INFO code_send_start user_id=7098988131 phone=+79***33 session_path=storage/sessions/7098988131.session
+2026-03-08 23:28:53,688 INFO code_send_request user_id=7098988131 phone=+79***33 force_sms=False
+2026-03-08 23:28:53,803 INFO code_send_response user_id=7098988131 phone=+79***33 type=SentCodeTypeApp next_type=unknown timeout=None hash=c3e330753cc66895b5
+2026-03-08 23:28:53,803 INFO event=AUTH_CODE_SENT user_id=7098988131 phone=+79***33
+2026-03-08 23:29:15,734 WARNING event=AUTH_CODE_INVALID user_id=7098988131 phone=+79***33 error=The phone code entered was invalid (caused by SignInRequest)
+2026-03-08 23:29:15,734 INFO session_deleted user_id=7098988131 reason=code_invalid path=storage/sessions/7098988131.session
+2026-03-08 23:29:15,734 INFO code_send_start user_id=7098988131 phone=+79***33 session_path=storage/sessions/7098988131.session
+2026-03-08 23:29:16,937 INFO code_send_request user_id=7098988131 phone=+79***33 force_sms=False
+2026-03-08 23:29:17,074 INFO code_send_response user_id=7098988131 phone=+79***33 type=SentCodeTypeApp next_type=unknown timeout=None hash=5ac8fc59136c3440ba
+2026-03-08 23:29:25,310 INFO session_deleted user_id=7098988131 reason=code_too_short path=storage/sessions/7098988131.session
+2026-03-08 23:29:42,602 INFO event=AUTH_LINK_START user_id=7098988131
+2026-03-08 23:29:46,964 INFO event=AUTH_PHONE_INPUT user_id=7098988131
+2026-03-08 23:29:46,964 INFO event=AUTH_PHONE_ACCEPTED user_id=7098988131 phone=+79***99
+2026-03-08 23:29:46,964 INFO code_send_start user_id=7098988131 phone=+79***99 session_path=storage/sessions/7098988131.session
+2026-03-08 23:29:48,491 INFO code_send_request user_id=7098988131 phone=+79***99 force_sms=False
+2026-03-08 23:29:48,530 INFO code_send_response user_id=7098988131 phone=+79***99 type=SentCodeTypeApp next_type=unknown timeout=None hash=a32d009c2fd5444a6d
+2026-03-08 23:29:48,531 INFO event=AUTH_CODE_SENT user_id=7098988131 phone=+79***99
+2026-03-08 23:30:11,849 INFO session_deleted user_id=7098988131 reason=code_too_short path=storage/sessions/7098988131.session
+2026-03-08 23:30:38,567 INFO event=AUTH_LINK_START user_id=7098988131
+2026-03-08 23:30:48,626 INFO event=AUTH_PHONE_INPUT user_id=7098988131
+2026-03-08 23:30:48,626 INFO event=AUTH_PHONE_ACCEPTED user_id=7098988131 phone=+79***99
+2026-03-08 23:30:48,627 INFO code_send_start user_id=7098988131 phone=+79***99 session_path=storage/sessions/7098988131.session
+2026-03-08 23:30:49,952 INFO code_send_request user_id=7098988131 phone=+79***99 force_sms=False
+2026-03-08 23:30:49,996 INFO code_send_response user_id=7098988131 phone=+79***99 type=SentCodeTypeApp next_type=unknown timeout=None hash=e482f82c8df08de995
+2026-03-08 23:30:49,997 INFO event=AUTH_CODE_SENT user_id=7098988131 phone=+79***99
+2026-03-08 23:31:07,499 INFO session_deleted user_id=7098988131 reason=code_too_short path=storage/sessions/7098988131.session
+2026-03-08 23:31:18,236 INFO event=AUTH_LINK_START user_id=7098988131
+2026-03-08 23:31:22,443 INFO event=AUTH_PHONE_INPUT user_id=7098988131
+2026-03-08 23:31:22,444 INFO event=AUTH_PHONE_ACCEPTED user_id=7098988131 phone=+79***99
+2026-03-08 23:31:22,445 INFO code_send_start user_id=7098988131 phone=+79***99 session_path=storage/sessions/7098988131.session
+2026-03-08 23:31:23,909 INFO code_send_request user_id=7098988131 phone=+79***99 force_sms=False
+2026-03-08 23:31:23,963 INFO code_send_response user_id=7098988131 phone=+79***99 type=SentCodeTypeApp next_type=unknown timeout=None hash=f153e23cec5f290446
+2026-03-08 23:31:23,964 INFO event=AUTH_CODE_SENT user_id=7098988131 phone=+79***99
+2026-03-08 23:31:42,283 WARNING event=AUTH_CODE_INVALID user_id=7098988131 phone=+79***99 error=The confirmation code has expired (caused by SignInRequest)
+2026-03-08 23:31:42,283 INFO session_deleted user_id=7098988131 reason=code_invalid path=storage/sessions/7098988131.session
+2026-03-08 23:31:42,283 INFO code_send_start user_id=7098988131 phone=+79***99 session_path=storage/sessions/7098988131.session
+2026-03-08 23:31:44,305 INFO code_send_request user_id=7098988131 phone=+79***99 force_sms=False
+2026-03-08 23:31:44,347 INFO code_send_response user_id=7098988131 phone=+79***99 type=SentCodeTypeApp next_type=unknown timeout=None hash=6774c2f538f67220d1
+2026-03-08 23:32:26,402 WARNING event=AUTH_CODE_INVALID user_id=7098988131 phone=+79***99 error=The confirmation code has expired (caused by SignInRequest)
+2026-03-08 23:32:26,403 INFO session_deleted user_id=7098988131 reason=code_invalid path=storage/sessions/7098988131.session
+2026-03-08 23:32:26,403 INFO code_send_start user_id=7098988131 phone=+79***99 session_path=storage/sessions/7098988131.session
+2026-03-08 23:32:27,630 INFO code_send_request user_id=7098988131 phone=+79***99 force_sms=False
+2026-03-08 23:32:27,699 INFO code_send_response user_id=7098988131 phone=+79***99 type=SentCodeTypeApp next_type=unknown timeout=None hash=25a3983a266fd1bb4e
+2026-03-08 23:33:56,056 INFO session_deleted user_id=7098988131 reason=code_too_short path=storage/sessions/7098988131.session
+2026-03-08 23:34:08,432 INFO event=AUTH_LINK_START user_id=7098988131
+2026-03-08 23:34:14,054 INFO event=AUTH_PHONE_INPUT user_id=7098988131
+2026-03-08 23:34:14,054 INFO event=AUTH_PHONE_ACCEPTED user_id=7098988131 phone=+79***99
+2026-03-08 23:34:14,056 INFO code_send_start user_id=7098988131 phone=+79***99 session_path=storage/sessions/7098988131.session
+2026-03-08 23:34:15,151 INFO code_send_request user_id=7098988131 phone=+79***99 force_sms=False
+2026-03-08 23:34:15,206 INFO code_send_response user_id=7098988131 phone=+79***99 type=SentCodeTypeApp next_type=unknown timeout=None hash=07458d6ec2c657c526
+2026-03-08 23:34:15,206 INFO event=AUTH_CODE_SENT user_id=7098988131 phone=+79***99
+2026-03-08 23:34:52,796 INFO event=AUTH_2FA_REQUIRED user_id=7098988131 phone=+79***99
+2026-03-09 04:02:25,076 INFO session_deleted user_id=5211149201 reason=session_not_authorized path=storage/sessions/5211149201.session
+2026-03-09 04:02:25,076 INFO event=AUTH_LINK_START user_id=5211149201
+2026-03-09 18:41:47,317 INFO event=AUTH_PHONE_INPUT user_id=5211149201
+2026-03-09 18:41:47,318 INFO event=AUTH_PHONE_ACCEPTED user_id=5211149201 phone=+79***13
+2026-03-09 18:41:47,319 INFO code_send_start user_id=5211149201 phone=+79***13 session_path=storage/sessions/5211149201.session
+2026-03-09 18:41:48,298 INFO code_send_request user_id=5211149201 phone=+79***13 force_sms=False
+2026-03-09 18:41:48,363 INFO code_send_response user_id=5211149201 phone=+79***13 type=SentCodeTypeApp next_type=unknown timeout=None hash=2c2614581760caadb1
+2026-03-09 18:41:48,363 INFO event=AUTH_CODE_SENT user_id=5211149201 phone=+79***13
+2026-03-09 18:42:42,564 INFO session_deleted user_id=7547865680 reason=session_not_authorized path=storage/sessions/7547865680.session
+2026-03-09 18:42:42,564 INFO event=AUTH_LINK_START user_id=7547865680
+2026-03-09 18:42:48,180 INFO event=AUTH_PHONE_INPUT user_id=7547865680
+2026-03-09 18:42:48,180 INFO event=AUTH_PHONE_ACCEPTED user_id=7547865680 phone=+79***48
+2026-03-09 18:42:48,181 INFO code_send_start user_id=7547865680 phone=+79***48 session_path=storage/sessions/7547865680.session
+2026-03-09 18:42:49,167 INFO code_send_request user_id=7547865680 phone=+79***48 force_sms=False
+2026-03-09 18:42:49,225 INFO code_send_response user_id=7547865680 phone=+79***48 type=SentCodeTypeApp next_type=unknown timeout=None hash=5a3c90efde2a4ad64a
+2026-03-09 18:42:49,225 INFO event=AUTH_CODE_SENT user_id=7547865680 phone=+79***48
+2026-03-09 18:43:19,971 INFO session_deleted user_id=7547865680 reason=code_too_short path=storage/sessions/7547865680.session
+2026-03-09 18:53:48,555 INFO event=AUTH_LINK_START user_id=7703483459
+2026-03-09 18:54:04,413 INFO event=AUTH_PHONE_INPUT user_id=7703483459
+2026-03-09 18:54:04,413 INFO event=AUTH_PHONE_ACCEPTED user_id=7703483459 phone=+79***46
+2026-03-09 18:54:04,414 INFO code_send_start user_id=7703483459 phone=+79***46 session_path=storage/sessions/7703483459.session
+2026-03-09 18:54:06,139 INFO code_send_request user_id=7703483459 phone=+79***46 force_sms=False
+2026-03-09 18:54:06,195 INFO code_send_response user_id=7703483459 phone=+79***46 type=SentCodeTypeApp next_type=unknown timeout=None hash=d5730e3ff01c11e681
+2026-03-09 18:54:06,195 INFO event=AUTH_CODE_SENT user_id=7703483459 phone=+79***46
+2026-03-09 18:56:07,864 INFO session_deleted user_id=7767438870 reason=session_not_authorized path=storage/sessions/7767438870.session
+2026-03-09 18:56:09,636 INFO event=AUTH_LINK_START user_id=7767438870
+2026-03-09 18:56:19,318 INFO event=AUTH_PHONE_INPUT user_id=7767438870
+2026-03-09 18:56:19,318 INFO event=AUTH_PHONE_ACCEPTED user_id=7767438870 phone=+79***21
+2026-03-09 18:56:19,318 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-09 18:56:20,338 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-09 18:56:20,378 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=c21d0b88eb814022dd
+2026-03-09 18:56:20,379 INFO event=AUTH_CODE_SENT user_id=7767438870 phone=+79***21
+2026-03-10 19:14:01,700 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-10 19:14:02,567 INFO event=AUTH_LINK_START user_id=7767438870
+2026-03-10 19:14:07,977 INFO event=AUTH_PHONE_INPUT user_id=7767438870
+2026-03-10 19:14:07,977 INFO event=AUTH_PHONE_ACCEPTED user_id=7767438870 phone=+79***21
+2026-03-10 19:14:07,978 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-10 19:14:09,857 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-10 19:14:09,901 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=4150ca09e6d1a7fb96
+2026-03-10 19:14:09,902 INFO event=AUTH_CODE_SENT user_id=7767438870 phone=+79***21
+2026-03-11 19:57:31,129 INFO session_deleted user_id=7767438870 reason=code_too_short path=storage/sessions/7767438870.session
+2026-03-11 19:57:32,446 INFO event=AUTH_LINK_START user_id=7767438870
+2026-03-11 19:57:38,400 INFO event=AUTH_PHONE_INPUT user_id=7767438870
+2026-03-11 19:57:38,400 INFO event=AUTH_PHONE_ACCEPTED user_id=7767438870 phone=+79***21
+2026-03-11 19:57:38,402 INFO code_send_start user_id=7767438870 phone=+79***21 session_path=storage/sessions/7767438870.session
+2026-03-11 19:57:39,676 INFO code_send_request user_id=7767438870 phone=+79***21 force_sms=False
+2026-03-11 19:57:39,721 INFO code_send_response user_id=7767438870 phone=+79***21 type=SentCodeTypeApp next_type=unknown timeout=None hash=152f8f6d37586b27dd
+2026-03-11 19:57:39,721 INFO event=AUTH_CODE_SENT user_id=7767438870 phone=+79***21

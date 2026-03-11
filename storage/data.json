@@ -1,0 +1,38 @@
+{
+  "users": {
+    "1562297545": {
+      "registered_at": "08-03-2026",
+      "channels": [
+        {
+          "channel": "https://t.me/esports_ru_official"
+        }
+      ],
+      "last_query": "расскажи что нового в кибер спорте",
+      "last_range": {
+        "from": "01-01-2026",
+        "to": "02-01-2026"
+      },
+      "last_parse": "01-01-2026 - 02-01-2026"
+    },
+    "7767438870": {
+      "registered_at": "08-03-2026",
+      "channels": [],
+      "last_query": "",
+      "last_range": {
+        "from": null,
+        "to": null
+      },
+      "last_parse": null
+    },
+    "7098988131": {
+      "registered_at": "08-03-2026",
+      "channels": [],
+      "last_query": "",
+      "last_range": {
+        "from": null,
+        "to": null
+      },
+      "last_parse": null
+    }
+  }
+}
