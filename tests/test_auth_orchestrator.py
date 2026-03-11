@@ -3,7 +3,6 @@ import unittest
 from types import SimpleNamespace
 
 from services.auth_orchestrator import AuthOrchestrator
-from services.user_serializer import UserOperationSerializer
 
 
 class SessionPasswordNeededError(Exception):
@@ -146,7 +145,6 @@ class AuthOrchestratorTests(unittest.TestCase):
             password_hash_invalid_error=PasswordHashInvalidError,
             reply_keyboard_remove_factory=lambda: "remove",
             now_ts=lambda: 100.0,
-            serializer=UserOperationSerializer(),
         )
         return orch, user_states, session_cache, bot, stats
 

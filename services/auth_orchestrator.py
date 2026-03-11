@@ -4,7 +4,6 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable
 
-from services.user_serializer import UserOperationSerializer
 
 @dataclass
 class AuthOrchestrator:
@@ -36,7 +35,6 @@ class AuthOrchestrator:
     phone_code_invalid_error: type[Exception]
     password_hash_invalid_error: type[Exception]
     reply_keyboard_remove_factory: Callable[[], Any]
-    serializer: UserOperationSerializer
     now_ts: Callable[[], float] = time.time
     on_handle_phone: Callable[[Any], None] | None = None
     on_handle_code: Callable[[Any], None] | None = None
@@ -66,10 +64,6 @@ class AuthOrchestrator:
     def start_link_flow(self, message: Any) -> None:
         auth_log = self.get_auth_logger()
         user_id = message.from_user.id
-        with self.serializer.serialize(user_id):
-            self._start_link_flow_locked(message, auth_log, user_id)
-
-    def _start_link_flow_locked(self, message: Any, auth_log: Any, user_id: int) -> None:
         if not self.telethon_credentials_ok():
             self.bot.send_message(
                 message.chat.id,
@@ -92,10 +86,6 @@ class AuthOrchestrator:
     def handle_link_phone(self, message: Any) -> None:
         auth_log = self.get_auth_logger()
         user_id = message.from_user.id
-        with self.serializer.serialize(user_id):
-            self._handle_link_phone_locked(message, auth_log, user_id)
-
-    def _handle_link_phone_locked(self, message: Any, auth_log: Any, user_id: int) -> None:
         state = self.user_states.get(user_id)
         auth_log.info("event=AUTH_PHONE_INPUT user_id=%s", user_id)
         if not state or not state.get("link_mode"):
@@ -155,10 +145,6 @@ class AuthOrchestrator:
     def handle_link_code(self, message: Any) -> None:
         auth_log = self.get_auth_logger()
         user_id = message.from_user.id
-        with self.serializer.serialize(user_id):
-            self._handle_link_code_locked(message, auth_log, user_id)
-
-    def _handle_link_code_locked(self, message: Any, auth_log: Any, user_id: int) -> None:
         state = self.user_states.get(user_id)
         if not state or not state.get("link_mode") or "phone" not in state:
             self.bot.send_message(message.chat.id, "Состояние сброшено, начните заново.")
@@ -249,10 +235,6 @@ class AuthOrchestrator:
     def handle_link_password(self, message: Any) -> None:
         auth_log = self.get_auth_logger()
         user_id = message.from_user.id
-        with self.serializer.serialize(user_id):
-            self._handle_link_password_locked(message, auth_log, user_id)
-
-    def _handle_link_password_locked(self, message: Any, auth_log: Any, user_id: int) -> None:
         state = self.user_states.get(user_id)
         if not state or not state.get("link_mode") or "phone" not in state or "code" not in state:
             self.bot.send_message(message.chat.id, "Состояние сброшено, начните заново.")
