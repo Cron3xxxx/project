@@ -26,8 +26,7 @@ def render_ai_html(text: str) -> str:
             out.append(f"<b>{_inline_markup(stripped[2:].strip())}</b>")
             continue
         if re.match(r"^[-*•]\s+", stripped):
-            cleaned = re.sub(r"^[-*•]\s+", "", stripped)
-            out.append(f"• {_inline_markup(cleaned)}")
+            out.append(f"• {_inline_markup(re.sub(r'^[-*•]\s+', '', stripped))}")
             continue
         if re.match(r"^\d+[.)]\s+", stripped):
             out.append(_inline_markup(stripped))

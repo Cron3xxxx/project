@@ -12,7 +12,6 @@ from services.auth_flow import (
     register_auth_failure,
 )
 from services.auth_orchestrator import AuthOrchestrator
-from services.user_serializer import UserOperationSerializer
 from services.auth_utils import delivery_hint, extract_digits_code
 
 
@@ -139,7 +138,6 @@ class AuthFlowIntegrationTests(unittest.TestCase):
             password_hash_invalid_error=PasswordHashInvalidError,
             reply_keyboard_remove_factory=lambda: "remove",
             now_ts=lambda: 100.0,
-            serializer=UserOperationSerializer(),
         )
         orch.set_handlers(
             handle_phone=lambda m: orch.handle_link_phone(m),
