@@ -59,6 +59,7 @@ from services.user_storage import (
     save_storage,
     upsert_user,
 )
+from services.user_serializer import UserOperationSerializer
 
 
 DATE_FORMAT = "%d-%m-%Y"
@@ -81,6 +82,7 @@ SESSION_AUTH_TTL_SECONDS = 30
 _TELETHON_LOOP = asyncio.new_event_loop()
 _LOGIN_CLIENTS: dict[int, TelegramClient] = {}
 _SESSION_AUTH_CACHE: dict[int, tuple[float, bool]] = {}
+_USER_SERIALIZER = UserOperationSerializer()
 
 
 def _telethon_loop_runner() -> None:
@@ -493,19 +495,20 @@ def _reset_link_flow(user_id: int) -> None:
 
 
 async def _send_login_code(user_id: int, phone: str) -> dict:
-    return await send_login_code_service(
-        user_id=user_id,
-        phone=phone,
-        api_id=int(TG_API_ID),
-        api_hash=TG_API_HASH,
-        session_path=_user_session_path(user_id),
-        login_clients=_LOGIN_CLIENTS,
-        client_factory=TelegramClient,
-        logger=_get_auth_logger(),
-        force_sms=TG_FORCE_SMS,
-        parse_sent_code_metadata=parse_sent_code_metadata,
-        mask_phone=_mask_phone,
-    )
+    with _USER_SERIALIZER.serialize(user_id):
+        return await send_login_code_service(
+            user_id=user_id,
+            phone=phone,
+            api_id=int(TG_API_ID),
+            api_hash=TG_API_HASH,
+            session_path=_user_session_path(user_id),
+            login_clients=_LOGIN_CLIENTS,
+            client_factory=TelegramClient,
+            logger=_get_auth_logger(),
+            force_sms=TG_FORCE_SMS,
+            parse_sent_code_metadata=parse_sent_code_metadata,
+            mask_phone=_mask_phone,
+        )
 
 
 async def _complete_login(
@@ -515,27 +518,29 @@ async def _complete_login(
     phone_code_hash: str | None = None,
     password: str | None = None,
 ) -> None:
-    await complete_login_service(
-        user_id=user_id,
-        phone=phone,
-        code=code,
-        phone_code_hash=phone_code_hash,
-        password=password,
-        api_id=int(TG_API_ID),
-        api_hash=TG_API_HASH,
-        session_path=_user_session_path(user_id),
-        login_clients=_LOGIN_CLIENTS,
-        client_factory=TelegramClient,
-        session_password_needed_error=SessionPasswordNeededError,
-    )
+    with _USER_SERIALIZER.serialize(user_id):
+        await complete_login_service(
+            user_id=user_id,
+            phone=phone,
+            code=code,
+            phone_code_hash=phone_code_hash,
+            password=password,
+            api_id=int(TG_API_ID),
+            api_hash=TG_API_HASH,
+            session_path=_user_session_path(user_id),
+            login_clients=_LOGIN_CLIENTS,
+            client_factory=TelegramClient,
+            session_password_needed_error=SessionPasswordNeededError,
+        )
 
 
 async def _complete_2fa(user_id: int, password: str) -> None:
-    await complete_2fa_service(
-        user_id=user_id,
-        password=password,
-        login_clients=_LOGIN_CLIENTS,
-    )
+    with _USER_SERIALIZER.serialize(user_id):
+        await complete_2fa_service(
+            user_id=user_id,
+            password=password,
+            login_clients=_LOGIN_CLIENTS,
+        )
 
 
 async def _close_login_client(user_id: int) -> None:
@@ -550,22 +555,23 @@ async def _parse_with_telethon(
     date_to: datetime,
     progress_cb=None,
 ) -> tuple[int, list[str]]:
-    api_id = int(TG_API_ID)
-    api_hash = TG_API_HASH
-    user_session_path = _user_session_path(user_id)
-    return await parse_with_telethon_service(
-        api_id=api_id,
-        api_hash=api_hash,
-        session_path=user_session_path if os.path.exists(user_session_path) else "",
-        fallback_session=None,
-        channels=channels,
-        query=query,
-        date_from=date_from,
-        date_to=date_to,
-        ai_max_messages=AI_MAX_MESSAGES,
-        ai_max_message_chars=AI_MAX_MESSAGE_CHARS,
-        progress_cb=progress_cb,
-    )
+    with _USER_SERIALIZER.serialize(user_id):
+        api_id = int(TG_API_ID)
+        api_hash = TG_API_HASH
+        user_session_path = _user_session_path(user_id)
+        return await parse_with_telethon_service(
+            api_id=api_id,
+            api_hash=api_hash,
+            session_path=user_session_path if os.path.exists(user_session_path) else "",
+            fallback_session=None,
+            channels=channels,
+            query=query,
+            date_from=date_from,
+            date_to=date_to,
+            ai_max_messages=AI_MAX_MESSAGES,
+            ai_max_message_chars=AI_MAX_MESSAGE_CHARS,
+            progress_cb=progress_cb,
+        )
 
 
 _AUTH_ORCHESTRATOR = AuthOrchestrator(
@@ -597,6 +603,7 @@ _AUTH_ORCHESTRATOR = AuthOrchestrator(
     phone_code_invalid_error=PhoneCodeInvalidError,
     password_hash_invalid_error=PasswordHashInvalidError,
     reply_keyboard_remove_factory=types.ReplyKeyboardRemove,
+    serializer=_USER_SERIALIZER,
 )
 
 _PARSING_ORCHESTRATOR = ParsingOrchestrator(
@@ -719,19 +726,23 @@ def handle_parsing(message):
 
 
 def _start_parsing_flow(user_id: int, chat_id: int, card_message_id: int | None = None) -> None:
-    _PARSING_ORCHESTRATOR.start_parsing_flow(user_id, chat_id, card_message_id=card_message_id)
+    with _USER_SERIALIZER.serialize(user_id):
+        _PARSING_ORCHESTRATOR.start_parsing_flow(user_id, chat_id, card_message_id=card_message_id)
 
 
 def _handle_parse_query(message):
-    _PARSING_ORCHESTRATOR.handle_parse_query(message)
+    with _USER_SERIALIZER.serialize(message.from_user.id):
+        _PARSING_ORCHESTRATOR.handle_parse_query(message)
 
 
 def _handle_parse_date_from(message):
-    _PARSING_ORCHESTRATOR.handle_parse_date_from(message)
+    with _USER_SERIALIZER.serialize(message.from_user.id):
+        _PARSING_ORCHESTRATOR.handle_parse_date_from(message)
 
 
 def _handle_parse_date_to(message):
-    _PARSING_ORCHESTRATOR.handle_parse_date_to(message)
+    with _USER_SERIALIZER.serialize(message.from_user.id):
+        _PARSING_ORCHESTRATOR.handle_parse_date_to(message)
 
 
 _PARSING_ORCHESTRATOR.set_handlers(
@@ -741,6 +752,12 @@ _PARSING_ORCHESTRATOR.set_handlers(
 )
 
 def _complete_parsing(message, user, state, date_from_raw: str, date_to_raw: str, date_from: datetime, date_to: datetime):
+    user_id = message.from_user.id
+    with _USER_SERIALIZER.serialize(user_id):
+        return _complete_parsing_impl(message, user, state, date_from_raw, date_to_raw, date_from, date_to)
+
+
+def _complete_parsing_impl(message, user, state, date_from_raw: str, date_to_raw: str, date_from: datetime, date_to: datetime):
     parsing_log = _get_parsing_logger()
     channels = user.get("channels", [])
     if not channels:
