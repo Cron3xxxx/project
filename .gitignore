@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+
+logs/
+auth.log
+storage/sessions/
+storage/drafts/
+storage/data.json
+storage/telethon_session*
