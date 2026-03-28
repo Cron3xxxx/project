@@ -83,6 +83,7 @@ class AuthSessionTests(unittest.IsolatedAsyncioTestCase):
     async def test_complete_login_passes_phone_code_hash(self) -> None:
         client = FakeClient()
         login_clients = {5: client}
+        logger = FakeLogger()
 
         await complete_login(
             user_id=5,
@@ -96,6 +97,7 @@ class AuthSessionTests(unittest.IsolatedAsyncioTestCase):
             login_clients=login_clients,
             client_factory=lambda *_: client,
             session_password_needed_error=SessionPasswordNeededError,
+            logger=logger,
         )
 
         self.assertIn(("sign_in_code", "+79991112233", "12345", "hash-xyz"), client.calls)
@@ -104,6 +106,7 @@ class AuthSessionTests(unittest.IsolatedAsyncioTestCase):
     async def test_complete_login_keeps_client_when_2fa_needed(self) -> None:
         client = FakeClient(needs_password=True)
         login_clients = {7: client}
+        logger = FakeLogger()
 
         with self.assertRaises(SessionPasswordNeededError):
             await complete_login(
@@ -118,6 +121,7 @@ class AuthSessionTests(unittest.IsolatedAsyncioTestCase):
                 login_clients=login_clients,
                 client_factory=lambda *_: client,
                 session_password_needed_error=SessionPasswordNeededError,
+                logger=logger,
             )
 
         self.assertIn(7, login_clients)
@@ -126,8 +130,9 @@ class AuthSessionTests(unittest.IsolatedAsyncioTestCase):
     async def test_complete_2fa_disconnects_and_removes_client(self) -> None:
         client = FakeClient()
         login_clients = {9: client}
+        logger = FakeLogger()
 
-        await complete_2fa(user_id=9, password="pwd", login_clients=login_clients)
+        await complete_2fa(user_id=9, password="pwd", login_clients=login_clients, logger=logger)
 
         self.assertIn(("sign_in_password", "pwd"), client.calls)
         self.assertNotIn(9, login_clients)

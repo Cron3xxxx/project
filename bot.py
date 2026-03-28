@@ -527,6 +527,7 @@ async def _complete_login(
         login_clients=_LOGIN_CLIENTS,
         client_factory=TelegramClient,
         session_password_needed_error=SessionPasswordNeededError,
+        logger=_get_auth_logger(),
     )
 
 
@@ -535,6 +536,7 @@ async def _complete_2fa(user_id: int, password: str) -> None:
         user_id=user_id,
         password=password,
         login_clients=_LOGIN_CLIENTS,
+        logger=_get_auth_logger(),
     )
 
 
